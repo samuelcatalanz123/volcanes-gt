@@ -10,7 +10,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.lago,
     departamento: 'Sololá',
     descripcion: 'Lago rodeado de volcanes, uno de los más bellos del mundo.',
-    foto: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lago%20de%20Atitlan.jpg?width=600',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/1_lake_atitlan_panorama_2009.jpg/500px-1_lake_atitlan_panorama_2009.jpg',
   ),
   Lugar(
     nombre: 'Lago de Izabal',
@@ -48,6 +48,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.playa,
     departamento: 'Santa Rosa',
     descripcion: 'Playa de arena negra; famosa por las tortugas marinas.',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Monterrico_68.jpg/500px-Monterrico_68.jpg',
   ),
   Lugar(
     nombre: 'Champerico',
@@ -92,5 +93,6 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.montana,
     departamento: 'Zacapa / Alta Verapaz',
     descripcion: 'Reserva de biosfera con bosque nuboso y mucha fauna.',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/El_Toro_and_La_Mina_peaks_from_Las_Piedras_%282025%29.jpg/500px-El_Toro_and_La_Mina_peaks_from_Las_Piedras_%282025%29.jpg',
   ),
 ];
