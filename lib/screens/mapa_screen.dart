@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import '../data/volcanes.dart';
 import '../data/lugares.dart';
 import '../data/departamentos.dart';
+import '../data/frontera.dart';
 import '../models/lugar.dart';
 import '../services/ubicacion.dart';
 import '../services/gasolineras.dart';
@@ -41,44 +42,9 @@ class _MapaScreenState extends State<MapaScreen> {
   static final _masAlto =
       volcanes.reduce((a, b) => a.alturaM >= b.alturaM ? a : b);
 
-  // Frontera REAL de Guatemala (datos geográficos, no dibujada a mano).
-  // Sirve para resaltar el país y oscurecer lo de afuera.
-  static final _bordeGuatemala = <LatLng>[
-    LatLng(13.735338, -90.095555),
-    LatLng(13.909771, -90.608624),
-    LatLng(13.927832, -91.23241),
-    LatLng(14.126218, -91.689747),
-    LatLng(14.538829, -92.22775),
-    LatLng(14.830103, -92.20323),
-    LatLng(15.064585, -92.087216),
-    LatLng(15.251447, -92.229249),
-    LatLng(16.066565, -91.74796),
-    LatLng(16.069562, -90.464473),
-    LatLng(16.41011, -90.438867),
-    LatLng(16.470778, -90.600847),
-    LatLng(16.687483, -90.711822),
-    LatLng(16.918477, -91.08167),
-    LatLng(17.252177, -91.453921),
-    LatLng(17.254658, -91.002269),
-    LatLng(17.817595, -91.00152),
-    LatLng(17.819326, -90.067934),
-    LatLng(17.808319, -89.14308),
-    LatLng(17.015577, -89.150806),
-    LatLng(15.886938, -89.229122),
-    LatLng(15.887273, -88.930613),
-    LatLng(15.70638, -88.604586),
-    LatLng(15.855389, -88.518364),
-    LatLng(15.727722, -88.225023),
-    LatLng(15.346247, -88.68068),
-    LatLng(15.066419, -89.154811),
-    LatLng(14.874286, -89.22522),
-    LatLng(14.678019, -89.145535),
-    LatLng(14.424133, -89.353326),
-    LatLng(14.362586, -89.587343),
-    LatLng(14.244816, -89.534219),
-    LatLng(14.134228, -89.721934),
-    LatLng(13.88197, -90.064678),
-  ];
+  // Frontera REAL de Guatemala en alta resolución (275 puntos, ver frontera.dart).
+  // Sirve para resaltar el país y tapar lo de afuera, sin cortar terreno real.
+  static final _bordeGuatemala = fronteraGuatemala;
 
   // Un rectángulo MUY grande que cubre toda la región (México, Centroamérica
   // y mares), con un "agujero" en forma de Guatemala. Pintado sólido, tapa por
