@@ -10,20 +10,13 @@ class FotoLugar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
+      // Image.network SIMPLE: en Flutter web, loadingBuilder/frameBuilder a
+      // veces dejan la imagen invisible. Sin ellos, carga igual que el mapa.
       child: Image.network(
         url,
         height: 180,
         width: double.infinity,
         fit: BoxFit.cover,
-        // Aparece suave cuando ya cargó (en vez de un indicador que en web
-        // a veces se queda pegado).
-        frameBuilder: (context, child, frame, wasSync) {
-          return AnimatedOpacity(
-            opacity: frame == null ? 0 : 1,
-            duration: const Duration(milliseconds: 300),
-            child: child,
-          );
-        },
         // Si la imagen no se puede cargar, muestra un respaldo.
         errorBuilder: (context, error, stack) => Container(
           height: 180,
