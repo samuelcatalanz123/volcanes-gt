@@ -30,9 +30,11 @@ class _MapaScreenState extends State<MapaScreen> {
   // Qué cosas se muestran en el mapa (los botones de abajo las prenden/apagan).
   bool _verVolcanes = true;
   final Set<TipoLugar> _tiposVisibles = {...TipoLugar.values};
-  // Gasolineras traídas de internet (OpenStreetMap) y si estamos cargando.
-  List<Gasolinera> _gasolineras = [];
+  // Gasolineras y aldeas traídas de internet (OpenStreetMap) + estados de carga.
+  List<PuntoOSM> _gasolineras = [];
+  List<PuntoOSM> _aldeas = [];
   bool _cargandoGaso = false;
+  bool _cargandoAldeas = false;
   // El volcán más alto de la lista (para marcarlo con una estrella).
   static final _masAlto =
       volcanes.reduce((a, b) => a.alturaM >= b.alturaM ? a : b);
@@ -105,30 +107,54 @@ class _MapaScreenState extends State<MapaScreen> {
   }
 
   // Pide a OpenStreetMap las gasolineras de la zona que se ve ahora.
-  // Pide acercarse primero, porque en todo el país serían miles.
-  Future<void> _buscarGasolineras() async {
+  Future<void> _buscarGasolineras() => _buscarEnZona(
+        nombre: 'gasolineras',
+        emoji: '⛽',
+        buscar: buscarGasolineras,
+        guardar: (lista) => _gasolineras = lista,
+        marcarCargando: (v) => _cargandoGaso = v,
+      );
+
+  // Pide a OpenStreetMap las aldeas de la zona que se ve ahora.
+  Future<void> _buscarAldeas() => _buscarEnZona(
+        nombre: 'aldeas',
+        emoji: '🏘️',
+        buscar: buscarAldeas,
+        guardar: (lista) => _aldeas = lista,
+        marcarCargando: (v) => _cargandoAldeas = v,
+      );
+
+  // Lógica común: pide acercarse (en todo el país serían miles), llama a la
+  // API, guarda el resultado y avisa cuántos encontró o si hubo error.
+  Future<void> _buscarEnZona({
+    required String nombre,
+    required String emoji,
+    required Future<List<PuntoOSM>> Function(LatLngBounds) buscar,
+    required void Function(List<PuntoOSM>) guardar,
+    required void Function(bool) marcarCargando,
+  }) async {
     final camara = _mapController.camera;
     if (camara.zoom < 11) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Acércate más al mapa para buscar gasolineras ⛽'),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Acércate más al mapa para buscar $nombre $emoji'),
       ));
       return;
     }
-    setState(() => _cargandoGaso = true);
+    setState(() => marcarCargando(true));
     try {
-      final encontradas = await buscarGasolineras(camara.visibleBounds);
+      final encontrados = await buscar(camara.visibleBounds);
       if (!mounted) return;
-      setState(() => _gasolineras = encontradas);
+      setState(() => guardar(encontrados));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Se encontraron ${encontradas.length} gasolineras ⛽'),
+        content: Text('Se encontraron ${encontrados.length} $nombre $emoji'),
       ));
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('No se pudieron cargar las gasolineras. Intenta otra vez.'),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('No se pudieron cargar las $nombre. Intenta otra vez.'),
       ));
     } finally {
-      if (mounted) setState(() => _cargandoGaso = false);
+      if (mounted) setState(() => marcarCargando(false));
     }
   }
 
@@ -379,6 +405,20 @@ class _MapaScreenState extends State<MapaScreen> {
                       ),
                     ),
                   ),
+              // Aldeas traídas de internet (🏘️ morado).
+              for (final a in _aldeas)
+                Marker(
+                  point: a.punto,
+                  width: 36,
+                  height: 36,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('🏘️ Aldea: ${a.nombre}'))),
+                    child: const Icon(Icons.holiday_village,
+                        color: Colors.purple, size: 24),
+                  ),
+                ),
               // Gasolineras traídas de internet (⛽ verde).
               for (final g in _gasolineras)
                 Marker(
@@ -453,6 +493,22 @@ class _MapaScreenState extends State<MapaScreen> {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Botón para buscar aldeas en la zona visible (de internet).
+          FloatingActionButton(
+            heroTag: 'aldeas',
+            backgroundColor: Colors.purple,
+            onPressed: _cargandoAldeas ? null : _buscarAldeas,
+            tooltip: 'Buscar aldeas aquí',
+            child: _cargandoAldeas
+                ? const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(
+                        strokeWidth: 2, color: Colors.white),
+                  )
+                : const Icon(Icons.holiday_village),
+          ),
+          const SizedBox(height: 12),
           // Botón para buscar gasolineras en la zona visible (de internet).
           FloatingActionButton(
             heroTag: 'gaso',

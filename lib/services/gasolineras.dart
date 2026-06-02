@@ -3,20 +3,23 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 
-/// Una gasolinera con su nombre y ubicación.
-class Gasolinera {
+/// Un punto que viene de OpenStreetMap: tiene nombre y ubicación.
+/// Lo usamos tanto para gasolineras como para aldeas.
+class PuntoOSM {
   final String nombre;
   final LatLng punto;
-  const Gasolinera(this.nombre, this.punto);
+  const PuntoOSM(this.nombre, this.punto);
 }
 
-/// Pide a OpenStreetMap (API Overpass) las gasolineras dentro del área visible.
-/// Devuelve la lista. Lanza una excepción si el servidor falla varias veces.
-Future<List<Gasolinera>> buscarGasolineras(LatLngBounds area) async {
+/// Pregunta genérica a OpenStreetMap (API Overpass) por nodos que cumplan un
+/// filtro, dentro del área visible. [filtro] es la parte de la consulta
+/// Overpass, por ejemplo: node["amenity"="fuel"]
+/// Lanza una excepción si el servidor falla varias veces.
+Future<List<PuntoOSM>> _consultarOverpass(
+    LatLngBounds area, String filtro) async {
   // Overpass usa el orden: sur, oeste, norte, este.
   final s = area.south, w = area.west, n = area.north, e = area.east;
-  final query =
-      '[out:json][timeout:60];node["amenity"="fuel"]($s,$w,$n,$e);out;';
+  final query = '[out:json][timeout:60];$filtro($s,$w,$n,$e);out;';
   final url = Uri.parse('https://overpass-api.de/api/interpreter');
 
   // El servidor público a veces se satura: reintentamos un par de veces.
@@ -31,8 +34,8 @@ Future<List<Gasolinera>> buscarGasolineras(LatLngBounds area) async {
             (data['elements'] as List).cast<Map<String, dynamic>>();
         return [
           for (final el in elementos)
-            Gasolinera(
-              (el['tags']?['name'] as String?) ?? 'Gasolinera',
+            PuntoOSM(
+              (el['tags']?['name'] as String?) ?? 'Sin nombre',
               LatLng((el['lat'] as num).toDouble(),
                   (el['lon'] as num).toDouble()),
             ),
@@ -44,3 +47,11 @@ Future<List<Gasolinera>> buscarGasolineras(LatLngBounds area) async {
   }
   throw Exception('Servidor ocupado, intenta de nuevo.');
 }
+
+/// Gasolineras de la zona visible.
+Future<List<PuntoOSM>> buscarGasolineras(LatLngBounds area) =>
+    _consultarOverpass(area, 'node["amenity"="fuel"]');
+
+/// Aldeas y caseríos de la zona visible.
+Future<List<PuntoOSM>> buscarAldeas(LatLngBounds area) =>
+    _consultarOverpass(area, 'node["place"~"village|hamlet"]');
