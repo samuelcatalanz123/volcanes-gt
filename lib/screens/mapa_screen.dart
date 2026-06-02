@@ -27,6 +27,37 @@ class _MapaScreenState extends State<MapaScreen> {
   static final _masAlto =
       volcanes.reduce((a, b) => a.alturaM >= b.alturaM ? a : b);
 
+  // Borde APROXIMADO de Guatemala (puntos lat/lng siguiendo la frontera).
+  // Sirve para resaltar el país y oscurecer lo de afuera.
+  static final _bordeGuatemala = <LatLng>[
+    LatLng(17.82, -92.20), // noroeste (frontera con México)
+    LatLng(17.82, -89.15), // noreste (esquina con Belice)
+    LatLng(15.90, -89.15), // bajando por la frontera con Belice
+    LatLng(15.90, -88.90),
+    LatLng(15.73, -88.20), // costa del Caribe (Puerto Barrios)
+    LatLng(15.00, -88.18), // frontera este con Honduras
+    LatLng(14.55, -89.35), // Honduras / El Salvador
+    LatLng(14.05, -89.58), // frontera con El Salvador
+    LatLng(13.98, -90.10),
+    LatLng(13.73, -90.55), // costa del Pacífico (sur)
+    LatLng(14.00, -91.50),
+    LatLng(14.22, -92.00), // suroeste (Pacífico, cerca de México)
+    LatLng(14.57, -92.20), // frontera suroeste con México (Tecún Umán)
+    LatLng(15.30, -92.20), // frontera oeste con México
+    LatLng(15.85, -91.80),
+    LatLng(16.10, -90.45),
+    LatLng(17.25, -91.00),
+  ];
+
+  // Un rectángulo grande que cubre todo lo visible; con un "agujero" en forma
+  // de Guatemala. Así pintamos de oscuro todo MENOS Guatemala.
+  static final _afuera = <LatLng>[
+    LatLng(12.5, -93.5),
+    LatLng(12.5, -87.0),
+    LatLng(19.0, -87.0),
+    LatLng(19.0, -93.5),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -163,6 +194,22 @@ class _MapaScreenState extends State<MapaScreen> {
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: 'com.samuel.volcanes_gt',
+          ),
+          // Máscara: oscurece todo MENOS Guatemala, y dibuja su borde.
+          PolygonLayer(
+            polygons: [
+              Polygon(
+                points: _afuera,
+                holePointsList: [_bordeGuatemala], // el agujero = Guatemala
+                color: Colors.black.withValues(alpha: 0.45),
+              ),
+              Polygon(
+                points: _bordeGuatemala,
+                borderColor: Colors.deepOrange,
+                borderStrokeWidth: 2.5,
+                color: Colors.transparent,
+              ),
+            ],
           ),
           MarkerLayer(
             markers: [
