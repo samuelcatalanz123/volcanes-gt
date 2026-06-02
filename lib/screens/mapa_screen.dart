@@ -38,11 +38,18 @@ class _MapaScreenState extends State<MapaScreen> {
     }
   }
 
+  // Vuelve a mostrar todo Guatemala (encaja el mapa en los límites del país).
+  void _verTodoGuatemala() {
+    _mapController.fitCamera(CameraFit.bounds(bounds: _limitesGuate));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('🌋 Volcanes de Guatemala')),
-      body: FlutterMap(
+      body: Stack(
+        children: [
+          FlutterMap(
         mapController: _mapController,
         options: MapOptions(
           initialCenter: _centroGuate,
@@ -63,17 +70,18 @@ class _MapaScreenState extends State<MapaScreen> {
               for (final v in volcanes)
                 Marker(
                   point: v.punto,
-                  width: 110,
-                  height: 56,
+                  width: 120,
+                  height: 68,
                   child: GestureDetector(
                     onTap: () => mostrarVolcanInfo(context, v),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // Rojo = volcán activo, naranja = apagado.
                         Icon(Icons.local_fire_department,
                             color: v.activo ? Colors.red : Colors.deepOrange,
                             size: 32),
-                        // Etiqueta blanca con el nombre para ver dónde está.
+                        // Etiqueta blanca con el nombre y la altura para ver dónde está.
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 4, vertical: 1),
@@ -81,12 +89,22 @@ class _MapaScreenState extends State<MapaScreen> {
                             color: Colors.white.withValues(alpha: 0.85),
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: Text(
-                            v.nombre.replaceFirst('Volcán de ', ''),
-                            style: const TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                v.nombre.replaceFirst('Volcán de ', ''),
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                '${v.alturaM} m',
+                                style: const TextStyle(
+                                    fontSize: 9, color: Colors.black54),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -109,17 +127,70 @@ class _MapaScreenState extends State<MapaScreen> {
             ],
           ),
         ],
+          ),
+          // Leyenda de colores arriba a la izquierda.
+          const Positioned(top: 12, left: 12, child: _Leyenda()),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (_yo != null) {
-            _mapController.move(_yo!, 11);
-          } else {
-            _ubicar();
-          }
-        },
-        tooltip: 'Centrar en mí',
-        child: const Icon(Icons.my_location),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Botón para volver a ver todo el país.
+          FloatingActionButton(
+            heroTag: 'todo',
+            onPressed: _verTodoGuatemala,
+            tooltip: 'Ver todo Guatemala',
+            child: const Icon(Icons.public),
+          ),
+          const SizedBox(height: 12),
+          // Botón para centrar en mi ubicación.
+          FloatingActionButton(
+            heroTag: 'yo',
+            onPressed: () {
+              if (_yo != null) {
+                _mapController.move(_yo!, 11);
+              } else {
+                _ubicar();
+              }
+            },
+            tooltip: 'Centrar en mí',
+            child: const Icon(Icons.my_location),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Caja pequeña que explica qué significan los colores de los volcanes.
+class _Leyenda extends StatelessWidget {
+  const _Leyenda();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            Icon(Icons.local_fire_department, color: Colors.red, size: 18),
+            SizedBox(width: 4),
+            Text('Activo', style: TextStyle(fontSize: 12)),
+          ]),
+          SizedBox(height: 2),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            Icon(Icons.local_fire_department,
+                color: Colors.deepOrange, size: 18),
+            SizedBox(width: 4),
+            Text('Apagado', style: TextStyle(fontSize: 12)),
+          ]),
+        ],
       ),
     );
   }
