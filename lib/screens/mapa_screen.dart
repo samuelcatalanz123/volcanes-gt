@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../data/volcanes.dart';
 import '../data/lugares.dart';
+import '../data/departamentos.dart';
 import '../models/lugar.dart';
 import '../services/ubicacion.dart';
 import '../services/gasolineras.dart';
@@ -29,6 +30,7 @@ class _MapaScreenState extends State<MapaScreen> {
   LatLng? _yo; // ubicación del usuario (null si no hay)
   // Qué cosas se muestran en el mapa (los botones de abajo las prenden/apagan).
   bool _verVolcanes = true;
+  bool _verDepartamentos = false; // los 22 departamentos (apagado por defecto)
   final Set<TipoLugar> _tiposVisibles = {...TipoLugar.values};
   // Gasolineras y aldeas traídas de internet (OpenStreetMap) + estados de carga.
   List<PuntoOSM> _gasolineras = [];
@@ -407,6 +409,45 @@ class _MapaScreenState extends State<MapaScreen> {
                       ),
                     ),
                   ),
+              // Los 22 departamentos (en su cabecera), si están activados.
+              if (_verDepartamentos)
+                for (final d in departamentos)
+                  Marker(
+                    point: d.punto,
+                    width: 130,
+                    height: 40,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  'Departamento de ${d.nombre} · cabecera: ${d.cabecera}'))),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.location_city,
+                              color: Colors.indigo, size: 20),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: Colors.indigo.withValues(alpha: 0.85),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              d.nombre,
+                              style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               // Aldeas traídas de internet (🏘️ morado).
               for (final a in _aldeas)
                 Marker(
@@ -486,6 +527,15 @@ class _MapaScreenState extends State<MapaScreen> {
                       }),
                     ),
                   ],
+                  const SizedBox(width: 6),
+                  FilterChip(
+                    avatar: const Icon(Icons.location_city,
+                        color: Colors.indigo, size: 18),
+                    label: const Text('Departamentos'),
+                    selected: _verDepartamentos,
+                    onSelected: (v) =>
+                        setState(() => _verDepartamentos = v),
+                  ),
                 ],
               ),
             ),

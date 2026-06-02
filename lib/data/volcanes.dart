@@ -13,4 +13,14 @@ const List<Volcan> volcanes = [
   Volcan(nombre: 'Volcán Santa María', lat: 14.756, lng: -91.552, alturaM: 3772, departamento: 'Quetzaltenango', activo: true, consejo: 'Cerca de Xela. Desde la cima se ve el domo activo Santiaguito.', foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/VolcanSantaMaria03.jpg/330px-VolcanSantaMaria03.jpg'),
   Volcan(nombre: 'Volcán Tajumulco', lat: 15.043, lng: -91.903, alturaM: 4220, departamento: 'San Marcos', activo: false, consejo: 'El punto más alto de Centroamérica. Mucho frío; aclimátate a la altura.', foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Finca_Piamonte%2C_San_Rafael_Pie_de_la_Cuesta_01.JPG/330px-Finca_Piamonte%2C_San_Rafael_Pie_de_la_Cuesta_01.JPG'),
   Volcan(nombre: 'Volcán Tacaná', lat: 15.132, lng: -92.109, alturaM: 4060, departamento: 'San Marcos', activo: true, consejo: 'En la frontera con México. Caminata larga; planifica con guía.', foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Volcan_Tacana_01.jpg/330px-Volcan_Tacana_01.jpg'),
+  // Más volcanes de Guatemala (coordenadas reales de OpenStreetMap).
+  Volcan(nombre: 'Volcán Santiaguito', lat: 14.7419, lng: -91.5690, alturaM: 2550, departamento: 'Quetzaltenango', activo: true, consejo: 'Domo activo a los pies del Santa María. Obsérvalo de lejos: es peligroso.'),
+  Volcan(nombre: 'Volcán Chicabal', lat: 14.7884, lng: -91.6560, alturaM: 2900, departamento: 'Quetzaltenango', activo: false, consejo: 'Tiene una laguna sagrada en el cráter; lugar ceremonial maya.'),
+  Volcan(nombre: 'Cerro Quemado', lat: 14.7971, lng: -91.5213, alturaM: 3197, departamento: 'Quetzaltenango', activo: false, consejo: 'Cerca de Xela; hizo erupción en 1818. Buenas vistas de la ciudad.'),
+  Volcan(nombre: 'Volcán Suchitán', lat: 14.3968, lng: -89.7764, alturaM: 2046, departamento: 'Jutiapa', activo: false, consejo: 'Cono boscoso del oriente; caminata moderada.'),
+  Volcan(nombre: 'Volcán de Chingo', lat: 14.1180, lng: -89.7270, alturaM: 1775, departamento: 'Jutiapa', activo: false, consejo: 'En la frontera con El Salvador; la cima es compartida.'),
+  Volcan(nombre: 'Volcán Ixtepeque', lat: 14.4248, lng: -89.6835, alturaM: 1305, departamento: 'Jutiapa', activo: false, consejo: 'Famoso por su obsidiana, usada por los antiguos mayas.'),
+  Volcan(nombre: 'Volcán Las Víboras', lat: 14.2113, lng: -89.7267, alturaM: 1110, departamento: 'Jutiapa', activo: false, consejo: 'Pequeño volcán del oriente seco; lleva mucha agua.'),
+  Volcan(nombre: 'Volcán Jumay', lat: 14.6941, lng: -89.9924, alturaM: 2182, departamento: 'Jalapa', activo: false, consejo: 'Símbolo de Jalapa; caminata popular entre la gente local.'),
+  Volcan(nombre: 'Volcán Tahual', lat: 14.4366, lng: -89.9051, alturaM: 1722, departamento: 'Jalapa', activo: false, consejo: 'Cono del oriente con laguna cercana (Laguna de Retana).'),
 ];
