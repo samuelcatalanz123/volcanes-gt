@@ -15,12 +15,13 @@ class FotoLugar extends StatelessWidget {
         height: 180,
         width: double.infinity,
         fit: BoxFit.cover,
-        // Mientras descarga la imagen, muestra un indicador de carga.
-        loadingBuilder: (context, child, progress) {
-          if (progress == null) return child; // ya cargó
-          return const SizedBox(
-            height: 180,
-            child: Center(child: CircularProgressIndicator()),
+        // Aparece suave cuando ya cargó (en vez de un indicador que en web
+        // a veces se queda pegado).
+        frameBuilder: (context, child, frame, wasSync) {
+          return AnimatedOpacity(
+            opacity: frame == null ? 0 : 1,
+            duration: const Duration(milliseconds: 300),
+            child: child,
           );
         },
         // Si la imagen no se puede cargar, muestra un respaldo.
