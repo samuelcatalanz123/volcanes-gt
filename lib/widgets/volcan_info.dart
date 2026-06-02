@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/volcan.dart';
 import 'foto_lugar.dart';
+import 'clima_vista.dart';
 
 /// Muestra la info de un volcán en una hoja inferior (bottom sheet).
 /// Si [desde] no es null (la ubicación del usuario), muestra la distancia.
@@ -49,6 +50,9 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
               Text(distanciaTexto),
             ]),
           ],
+          // Clima actual del volcán (se pide a internet al abrir la tarjeta).
+          const SizedBox(height: 6),
+          ClimaVista(lat: v.lat, lng: v.lng),
           const SizedBox(height: 12),
           Text(v.consejo, style: const TextStyle(height: 1.4)),
         ],
