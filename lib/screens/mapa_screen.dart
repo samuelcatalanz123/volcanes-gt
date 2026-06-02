@@ -33,26 +33,43 @@ class _MapaScreenState extends State<MapaScreen> {
   static final _masAlto =
       volcanes.reduce((a, b) => a.alturaM >= b.alturaM ? a : b);
 
-  // Borde APROXIMADO de Guatemala (puntos lat/lng siguiendo la frontera).
+  // Frontera REAL de Guatemala (datos geográficos, no dibujada a mano).
   // Sirve para resaltar el país y oscurecer lo de afuera.
   static final _bordeGuatemala = <LatLng>[
-    LatLng(17.82, -92.20), // noroeste (frontera con México)
-    LatLng(17.82, -89.15), // noreste (esquina con Belice)
-    LatLng(15.90, -89.15), // bajando por la frontera con Belice
-    LatLng(15.90, -88.90),
-    LatLng(15.73, -88.20), // costa del Caribe (Puerto Barrios)
-    LatLng(15.00, -88.18), // frontera este con Honduras
-    LatLng(14.55, -89.35), // Honduras / El Salvador
-    LatLng(14.05, -89.58), // frontera con El Salvador
-    LatLng(13.98, -90.10),
-    LatLng(13.73, -90.55), // costa del Pacífico (sur)
-    LatLng(14.00, -91.50),
-    LatLng(14.22, -92.00), // suroeste (Pacífico, cerca de México)
-    LatLng(14.57, -92.20), // frontera suroeste con México (Tecún Umán)
-    LatLng(15.30, -92.20), // frontera oeste con México
-    LatLng(15.85, -91.80),
-    LatLng(16.10, -90.45),
-    LatLng(17.25, -91.00),
+    LatLng(13.735338, -90.095555),
+    LatLng(13.909771, -90.608624),
+    LatLng(13.927832, -91.23241),
+    LatLng(14.126218, -91.689747),
+    LatLng(14.538829, -92.22775),
+    LatLng(14.830103, -92.20323),
+    LatLng(15.064585, -92.087216),
+    LatLng(15.251447, -92.229249),
+    LatLng(16.066565, -91.74796),
+    LatLng(16.069562, -90.464473),
+    LatLng(16.41011, -90.438867),
+    LatLng(16.470778, -90.600847),
+    LatLng(16.687483, -90.711822),
+    LatLng(16.918477, -91.08167),
+    LatLng(17.252177, -91.453921),
+    LatLng(17.254658, -91.002269),
+    LatLng(17.817595, -91.00152),
+    LatLng(17.819326, -90.067934),
+    LatLng(17.808319, -89.14308),
+    LatLng(17.015577, -89.150806),
+    LatLng(15.886938, -89.229122),
+    LatLng(15.887273, -88.930613),
+    LatLng(15.70638, -88.604586),
+    LatLng(15.855389, -88.518364),
+    LatLng(15.727722, -88.225023),
+    LatLng(15.346247, -88.68068),
+    LatLng(15.066419, -89.154811),
+    LatLng(14.874286, -89.22522),
+    LatLng(14.678019, -89.145535),
+    LatLng(14.424133, -89.353326),
+    LatLng(14.362586, -89.587343),
+    LatLng(14.244816, -89.534219),
+    LatLng(14.134228, -89.721934),
+    LatLng(13.88197, -90.064678),
   ];
 
   // Un rectángulo grande que cubre todo lo visible; con un "agujero" en forma
