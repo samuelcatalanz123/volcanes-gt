@@ -72,6 +72,45 @@ class _MapaScreenState extends State<MapaScreen> {
     }
   }
 
+  // Muestra una ventana "Acerca de" con el crédito del creador.
+  void _mostrarAcercaDe() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(children: [
+          Text('🌋', style: TextStyle(fontSize: 28)),
+          SizedBox(width: 8),
+          Text('Volcanes GT'),
+        ]),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Creado por', style: TextStyle(color: Colors.black54)),
+            SizedBox(height: 2),
+            Text('Samuel Catalán',
+                style:
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Text('Creador del mapa de Guatemala y muchos proyectos más. 🇬🇹',
+                style: TextStyle(height: 1.4)),
+            SizedBox(height: 12),
+            Text(
+              'Datos de OpenStreetMap, Open-Meteo y Wikimedia (uso libre).',
+              style: TextStyle(fontSize: 12, color: Colors.black54),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cerrar'),
+          ),
+        ],
+      ),
+    );
+  }
+
   // Vuelve a mostrar todo Guatemala (encaja el mapa en los límites del país).
   void _verTodoGuatemala() {
     _mapController.fitCamera(CameraFit.bounds(bounds: _limitesGuate));
@@ -274,6 +313,11 @@ class _MapaScreenState extends State<MapaScreen> {
             icon: const Icon(Icons.list),
             tooltip: 'Lista por altura',
             onPressed: _mostrarLista,
+          ),
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'Acerca de',
+            onPressed: _mostrarAcercaDe,
           ),
         ],
       ),
