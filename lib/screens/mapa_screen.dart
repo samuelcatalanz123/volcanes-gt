@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../data/volcanes.dart';
+import '../data/lugares.dart';
+import '../models/lugar.dart';
 import '../services/ubicacion.dart';
 import '../widgets/volcan_info.dart';
+import '../widgets/lugar_info.dart';
 
 class MapaScreen extends StatefulWidget {
   const MapaScreen({super.key});
@@ -23,6 +26,9 @@ class _MapaScreenState extends State<MapaScreen> {
     LatLng(18.0, -88.0), // arriba-derecha
   );
   LatLng? _yo; // ubicación del usuario (null si no hay)
+  // Qué cosas se muestran en el mapa (los botones de abajo las prenden/apagan).
+  bool _verVolcanes = true;
+  final Set<TipoLugar> _tiposVisibles = {...TipoLugar.values};
   // El volcán más alto de la lista (para marcarlo con una estrella).
   static final _masAlto =
       volcanes.reduce((a, b) => a.alturaM >= b.alturaM ? a : b);
@@ -214,6 +220,7 @@ class _MapaScreenState extends State<MapaScreen> {
           MarkerLayer(
             markers: [
               // Un marcador por cada volcán: el ícono de fuego + su nombre debajo.
+              if (_verVolcanes)
               for (final v in volcanes)
                 Marker(
                   point: v.punto,
@@ -265,6 +272,39 @@ class _MapaScreenState extends State<MapaScreen> {
                     ),
                   ),
                 ),
+              // Un marcador por cada lugar (lago/playa/montaña) que esté visible.
+              for (final l in lugares)
+                if (_tiposVisibles.contains(l.tipo))
+                  Marker(
+                    point: l.punto,
+                    width: 120,
+                    height: 54,
+                    child: GestureDetector(
+                      onTap: () => mostrarLugarInfo(context, l),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(iconoDe(l.tipo),
+                              color: colorDe(l.tipo), size: 28),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.85),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              l.nombre,
+                              style: const TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               // Marcador de la ubicación del usuario (si existe).
               if (_yo != null)
                 Marker(
@@ -284,6 +324,42 @@ class _MapaScreenState extends State<MapaScreen> {
           ),
           // Leyenda de colores arriba a la izquierda.
           const Positioned(top: 12, left: 12, child: _Leyenda()),
+          // Botones (abajo) para mostrar/ocultar cada tipo de lugar.
+          Positioned(
+            bottom: 12,
+            left: 12,
+            right: 90,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  FilterChip(
+                    avatar: const Icon(Icons.local_fire_department,
+                        color: Colors.red, size: 18),
+                    label: const Text('Volcanes'),
+                    selected: _verVolcanes,
+                    onSelected: (v) => setState(() => _verVolcanes = v),
+                  ),
+                  for (final tipo in TipoLugar.values) ...[
+                    const SizedBox(width: 6),
+                    FilterChip(
+                      avatar: Icon(iconoDe(tipo),
+                          color: colorDe(tipo), size: 18),
+                      label: Text(nombreTipo(tipo)),
+                      selected: _tiposVisibles.contains(tipo),
+                      onSelected: (v) => setState(() {
+                        if (v) {
+                          _tiposVisibles.add(tipo);
+                        } else {
+                          _tiposVisibles.remove(tipo);
+                        }
+                      }),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
         ],
       ),
       floatingActionButton: Column(
