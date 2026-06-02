@@ -78,13 +78,14 @@ class _MapaScreenState extends State<MapaScreen> {
     LatLng(13.88197, -90.064678),
   ];
 
-  // Un rectángulo grande que cubre todo lo visible; con un "agujero" en forma
-  // de Guatemala. Así pintamos de oscuro todo MENOS Guatemala.
+  // Un rectángulo MUY grande que cubre toda la región (México, Centroamérica
+  // y mares), con un "agujero" en forma de Guatemala. Pintado sólido, tapa por
+  // completo a los países vecinos: solo se ve Guatemala.
   static final _afuera = <LatLng>[
-    LatLng(12.5, -93.5),
-    LatLng(12.5, -87.0),
-    LatLng(19.0, -87.0),
-    LatLng(19.0, -93.5),
+    LatLng(2.0, -108.0),
+    LatLng(2.0, -75.0),
+    LatLng(30.0, -75.0),
+    LatLng(30.0, -108.0),
   ];
 
   @override
@@ -305,7 +306,8 @@ class _MapaScreenState extends State<MapaScreen> {
               Polygon(
                 points: _afuera,
                 holePointsList: [_bordeGuatemala], // el agujero = Guatemala
-                color: Colors.black.withValues(alpha: 0.45),
+                // Color SÓLIDO (sin transparencia): tapa del todo a los vecinos.
+                color: const Color(0xFFDDE6EC), // gris-azulado neutro
               ),
               Polygon(
                 points: _bordeGuatemala,
