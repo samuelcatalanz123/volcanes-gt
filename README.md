@@ -6,6 +6,8 @@ y montañas, con fotos, información y datos en vivo.
 
 > Creado por **Samuel Catalán** — creador del mapa de Guatemala y muchos proyectos más. 🇬🇹
 
+### 🌐 Pruébala en vivo: **https://samuelcatalanz123.github.io/volcanes-gt/**
+
 ## ✨ Qué hace
 
 - 🗺️ Mapa centrado **solo en Guatemala** (con su frontera real resaltada).
