@@ -36,8 +36,10 @@ class _MapaScreenState extends State<MapaScreen> {
   // Gasolineras y aldeas traídas de internet (OpenStreetMap) + estados de carga.
   List<PuntoOSM> _gasolineras = [];
   List<PuntoOSM> _aldeas = [];
+  List<Rio> _rios = [];
   bool _cargandoGaso = false;
   bool _cargandoAldeas = false;
+  bool _cargandoRios = false;
   // El volcán más alto de la lista (para marcarlo con una estrella).
   static final _masAlto =
       volcanes.reduce((a, b) => a.alturaM >= b.alturaM ? a : b);
@@ -92,6 +94,33 @@ class _MapaScreenState extends State<MapaScreen> {
         guardar: (lista) => _aldeas = lista,
         marcarCargando: (v) => _cargandoAldeas = v,
       );
+
+  // Pide a OpenStreetMap los ríos de la zona visible y los dibuja como líneas.
+  Future<void> _buscarRios() async {
+    final camara = _mapController.camera;
+    if (camara.zoom < 9) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Acércate más al mapa para buscar ríos 🏞️'),
+      ));
+      return;
+    }
+    setState(() => _cargandoRios = true);
+    try {
+      final encontrados = await buscarRios(camara.visibleBounds);
+      if (!mounted) return;
+      setState(() => _rios = encontrados);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Se encontraron ${encontrados.length} ríos 🏞️'),
+      ));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('No se pudieron cargar los ríos. Intenta otra vez.'),
+      ));
+    } finally {
+      if (mounted) setState(() => _cargandoRios = false);
+    }
+  }
 
   // Lógica común: pide acercarse (en todo el país serían miles), llama a la
   // API, guarda el resultado y avisa cuántos encontró o si hubo error.
@@ -283,6 +312,17 @@ class _MapaScreenState extends State<MapaScreen> {
                 borderStrokeWidth: 2.5,
                 color: Colors.transparent,
               ),
+            ],
+          ),
+          // Ríos (líneas azules) traídos de internet.
+          PolylineLayer(
+            polylines: [
+              for (final r in _rios)
+                Polyline(
+                  points: r.puntos,
+                  color: Colors.blue.shade600,
+                  strokeWidth: 2.5,
+                ),
             ],
           ),
           MarkerLayer(
@@ -511,6 +551,22 @@ class _MapaScreenState extends State<MapaScreen> {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Botón para buscar ríos en la zona visible (de internet).
+          FloatingActionButton(
+            heroTag: 'rios',
+            backgroundColor: Colors.blue,
+            onPressed: _cargandoRios ? null : _buscarRios,
+            tooltip: 'Buscar ríos aquí',
+            child: _cargandoRios
+                ? const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(
+                        strokeWidth: 2, color: Colors.white),
+                  )
+                : const Icon(Icons.water),
+          ),
+          const SizedBox(height: 12),
           // Botón para buscar aldeas en la zona visible (de internet).
           FloatingActionButton(
             heroTag: 'aldeas',
