@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/volcan.dart';
+import 'foto_lugar.dart';
 
 /// Muestra la info de un volcán en una hoja inferior (bottom sheet).
 /// Si [desde] no es null (la ubicación del usuario), muestra la distancia.
@@ -21,6 +22,11 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Foto del volcán (si tiene), con respaldo si no carga.
+          if (v.foto != null) ...[
+            FotoLugar(url: v.foto!),
+            const SizedBox(height: 12),
+          ],
           Text(v.nombre, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Row(children: [

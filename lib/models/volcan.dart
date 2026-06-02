@@ -9,6 +9,7 @@ class Volcan {
   final String departamento;
   final bool activo;
   final String consejo;
+  final String? foto; // URL de una foto (de Wikipedia); puede ser null
 
   const Volcan({
     required this.nombre,
@@ -18,6 +19,7 @@ class Volcan {
     required this.departamento,
     required this.activo,
     required this.consejo,
+    this.foto,
   });
 
   /// Coordenada que usa flutter_map.

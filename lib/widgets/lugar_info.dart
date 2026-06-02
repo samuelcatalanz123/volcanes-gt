@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/lugar.dart';
+import 'foto_lugar.dart';
 
 /// El ícono que representa cada tipo de lugar.
 IconData iconoDe(TipoLugar tipo) {
@@ -48,6 +49,11 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Foto del lugar (si tiene), con respaldo si no carga.
+          if (l.foto != null) ...[
+            FotoLugar(url: l.foto!),
+            const SizedBox(height: 12),
+          ],
           Row(children: [
             Icon(iconoDe(l.tipo), color: colorDe(l.tipo)),
             const SizedBox(width: 8),

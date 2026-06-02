@@ -11,6 +11,7 @@ class Lugar {
   final TipoLugar tipo;
   final String departamento;
   final String descripcion;
+  final String? foto; // URL de una foto (de Wikipedia); puede ser null
 
   const Lugar({
     required this.nombre,
@@ -19,6 +20,7 @@ class Lugar {
     required this.tipo,
     required this.departamento,
     required this.descripcion,
+    this.foto,
   });
 
   LatLng get punto => LatLng(lat, lng);
