@@ -16,6 +16,12 @@ class _MapaScreenState extends State<MapaScreen> {
   final _mapController = MapController();
   // Centro aproximado de Guatemala. (LatLng no es const en latlong2 → final.)
   static final _centroGuate = LatLng(15.0, -90.3);
+  // Límites del mapa: una caja que rodea Guatemala. Así el mapa NO se puede
+  // arrastrar a otros países. (esquina sur-oeste y nor-este)
+  static final _limitesGuate = LatLngBounds(
+    LatLng(13.5, -92.5), // abajo-izquierda
+    LatLng(18.0, -88.0), // arriba-derecha
+  );
   LatLng? _yo; // ubicación del usuario (null si no hay)
 
   @override
@@ -38,7 +44,14 @@ class _MapaScreenState extends State<MapaScreen> {
       appBar: AppBar(title: const Text('🌋 Volcanes de Guatemala')),
       body: FlutterMap(
         mapController: _mapController,
-        options: MapOptions(initialCenter: _centroGuate, initialZoom: 7.5),
+        options: MapOptions(
+          initialCenter: _centroGuate,
+          initialZoom: 7.5,
+          // El mapa se queda dentro de Guatemala y no se aleja ni acerca de más.
+          minZoom: 7,
+          maxZoom: 14,
+          cameraConstraint: CameraConstraint.contain(bounds: _limitesGuate),
+        ),
         children: [
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -46,16 +59,38 @@ class _MapaScreenState extends State<MapaScreen> {
           ),
           MarkerLayer(
             markers: [
-              // Un marcador por cada volcán.
+              // Un marcador por cada volcán: el ícono de fuego + su nombre debajo.
               for (final v in volcanes)
                 Marker(
                   point: v.punto,
-                  width: 40,
-                  height: 40,
+                  width: 110,
+                  height: 56,
                   child: GestureDetector(
                     onTap: () => mostrarVolcanInfo(context, v),
-                    child: Icon(Icons.local_fire_department,
-                        color: v.activo ? Colors.red : Colors.deepOrange, size: 36),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.local_fire_department,
+                            color: v.activo ? Colors.red : Colors.deepOrange,
+                            size: 32),
+                        // Etiqueta blanca con el nombre para ver dónde está.
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            v.nombre.replaceFirst('Volcán de ', ''),
+                            style: const TextStyle(
+                                fontSize: 10, fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               // Marcador de la ubicación del usuario (si existe).
