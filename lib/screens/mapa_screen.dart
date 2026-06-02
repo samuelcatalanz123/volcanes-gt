@@ -46,11 +46,56 @@ class _MapaScreenState extends State<MapaScreen> {
     _mapController.fitCamera(CameraFit.bounds(bounds: _limitesGuate));
   }
 
+  // Abre una lista de los volcanes ordenados del más alto al más bajo.
+  // Al tocar uno, cierra la lista y vuela hacia ese volcán en el mapa.
+  void _mostrarLista() {
+    final ordenados = [...volcanes]
+      ..sort((a, b) => b.alturaM.compareTo(a.alturaM));
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => ListView(
+        shrinkWrap: true,
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 8),
+            child: Text('Volcanes (del más alto al más bajo)',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+          for (final v in ordenados)
+            ListTile(
+              leading: Icon(
+                v.activo ? Icons.local_fire_department : Icons.terrain,
+                color: v.activo ? Colors.red : Colors.deepOrange,
+              ),
+              title: Text(v.nombre),
+              subtitle: Text('${v.alturaM} m  ·  ${v.departamento}'),
+              trailing: v == _masAlto
+                  ? const Icon(Icons.star, color: Colors.amber)
+                  : null,
+              onTap: () {
+                Navigator.pop(context); // cierra la lista
+                _mapController.move(v.punto, 11); // vuela al volcán
+              },
+            ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('🌋 ${volcanes.length} Volcanes de Guatemala')),
+        title: Text('🌋 ${volcanes.length} Volcanes de Guatemala'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.list),
+            tooltip: 'Lista por altura',
+            onPressed: _mostrarLista,
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           FlutterMap(
@@ -77,7 +122,7 @@ class _MapaScreenState extends State<MapaScreen> {
                   width: 120,
                   height: 84,
                   child: GestureDetector(
-                    onTap: () => mostrarVolcanInfo(context, v),
+                    onTap: () => mostrarVolcanInfo(context, v, desde: _yo),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
