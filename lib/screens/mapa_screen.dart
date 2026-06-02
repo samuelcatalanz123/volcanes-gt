@@ -23,6 +23,9 @@ class _MapaScreenState extends State<MapaScreen> {
     LatLng(18.0, -88.0), // arriba-derecha
   );
   LatLng? _yo; // ubicación del usuario (null si no hay)
+  // El volcán más alto de la lista (para marcarlo con una estrella).
+  static final _masAlto =
+      volcanes.reduce((a, b) => a.alturaM >= b.alturaM ? a : b);
 
   @override
   void initState() {
@@ -46,7 +49,8 @@ class _MapaScreenState extends State<MapaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('🌋 Volcanes de Guatemala')),
+      appBar: AppBar(
+          title: Text('🌋 ${volcanes.length} Volcanes de Guatemala')),
       body: Stack(
         children: [
           FlutterMap(
@@ -71,14 +75,21 @@ class _MapaScreenState extends State<MapaScreen> {
                 Marker(
                   point: v.punto,
                   width: 120,
-                  height: 68,
+                  height: 84,
                   child: GestureDetector(
                     onTap: () => mostrarVolcanInfo(context, v),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Rojo = volcán activo, naranja = apagado.
-                        Icon(Icons.local_fire_department,
+                        // Estrella amarilla sobre el volcán más alto.
+                        if (v == _masAlto)
+                          const Icon(Icons.star,
+                              color: Colors.amber, size: 16),
+                        // Activo = fuego rojo; apagado = montaña naranja.
+                        Icon(
+                            v.activo
+                                ? Icons.local_fire_department
+                                : Icons.terrain,
                             color: v.activo ? Colors.red : Colors.deepOrange,
                             size: 32),
                         // Etiqueta blanca con el nombre y la altura para ver dónde está.
@@ -185,10 +196,15 @@ class _Leyenda extends StatelessWidget {
           ]),
           SizedBox(height: 2),
           Row(mainAxisSize: MainAxisSize.min, children: [
-            Icon(Icons.local_fire_department,
-                color: Colors.deepOrange, size: 18),
+            Icon(Icons.terrain, color: Colors.deepOrange, size: 18),
             SizedBox(width: 4),
             Text('Apagado', style: TextStyle(fontSize: 12)),
+          ]),
+          SizedBox(height: 2),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            Icon(Icons.star, color: Colors.amber, size: 18),
+            SizedBox(width: 4),
+            Text('Más alto', style: TextStyle(fontSize: 12)),
           ]),
         ],
       ),
