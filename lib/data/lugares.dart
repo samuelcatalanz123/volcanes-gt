@@ -19,7 +19,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.lago,
     departamento: 'Izabal',
     descripcion: 'El lago más grande de Guatemala; cerca del Río Dulce.',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Castillo_De_San_Felipe.JPG/330px-Castillo_De_San_Felipe.JPG',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Beach_in_Izabal%2C_Guatemala.jpg/500px-Beach_in_Izabal%2C_Guatemala.jpg',
   ),
   Lugar(
     nombre: 'Lago Petén Itzá',
@@ -74,6 +74,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.playa,
     departamento: 'Izabal',
     descripcion: 'Playa de arena blanca en el Caribe guatemalteco.',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/The_ocean_through_an_empty_glass_bottle_-_Playa_Blanca_Izabal.jpg/500px-The_ocean_through_an_empty_glass_bottle_-_Playa_Blanca_Izabal.jpg',
   ),
 
   // ---- Montañas y sierras ⛰️ ----
