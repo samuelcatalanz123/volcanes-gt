@@ -138,14 +138,34 @@ class _MapaScreenState extends State<MapaScreen> {
                             children: [
                               for (final v in filtrados)
                                 ListTile(
-                                  leading: Icon(
-                                    v.activo
-                                        ? Icons.local_fire_department
-                                        : Icons.terrain,
-                                    color: v.activo
-                                        ? Colors.red
-                                        : Colors.deepOrange,
-                                  ),
+                                  // Foto pequeña del volcán (o ícono si no hay).
+                                  leading: v.foto != null
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          child: Image.network(
+                                            v.foto!,
+                                            width: 54,
+                                            height: 54,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (c, e, s) => Icon(
+                                              v.activo
+                                                  ? Icons.local_fire_department
+                                                  : Icons.terrain,
+                                              color: v.activo
+                                                  ? Colors.red
+                                                  : Colors.deepOrange,
+                                            ),
+                                          ),
+                                        )
+                                      : Icon(
+                                          v.activo
+                                              ? Icons.local_fire_department
+                                              : Icons.terrain,
+                                          color: v.activo
+                                              ? Colors.red
+                                              : Colors.deepOrange,
+                                        ),
                                   title: Text(v.nombre),
                                   subtitle: Text(
                                       '${v.alturaM} m  ·  ${v.departamento}'),
@@ -155,8 +175,8 @@ class _MapaScreenState extends State<MapaScreen> {
                                       : null,
                                   onTap: () {
                                     Navigator.pop(context); // cierra la lista
-                                    _mapController.move(
-                                        v.punto, 11); // vuela al volcán
+                                    mostrarVolcanInfo(context, v,
+                                        desde: _yo); // abre la ficha con foto
                                   },
                                 ),
                             ],
@@ -230,6 +250,7 @@ class _MapaScreenState extends State<MapaScreen> {
                   width: 120,
                   height: 84,
                   child: GestureDetector(
+                    behavior: HitTestBehavior.opaque, // toda la zona toca
                     onTap: () => mostrarVolcanInfo(context, v, desde: _yo),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -283,6 +304,7 @@ class _MapaScreenState extends State<MapaScreen> {
                     width: 120,
                     height: 54,
                     child: GestureDetector(
+                      behavior: HitTestBehavior.opaque, // toda la zona toca
                       onTap: () => mostrarLugarInfo(context, l),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
