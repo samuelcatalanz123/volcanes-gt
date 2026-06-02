@@ -191,9 +191,10 @@ class _MapaScreenState extends State<MapaScreen> {
         options: MapOptions(
           initialCenter: _centroGuate,
           initialZoom: 7.5,
-          // El mapa se queda dentro de Guatemala y no se aleja ni acerca de más.
+          // El mapa se queda dentro de Guatemala, pero ahora SÍ permite
+          // acercarse mucho (hasta zoom 18) para ver pueblos y calles.
           minZoom: 7,
-          maxZoom: 14,
+          maxZoom: 18,
           cameraConstraint: CameraConstraint.contain(bounds: _limitesGuate),
         ),
         children: [
