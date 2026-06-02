@@ -46,40 +46,91 @@ class _MapaScreenState extends State<MapaScreen> {
     _mapController.fitCamera(CameraFit.bounds(bounds: _limitesGuate));
   }
 
-  // Abre una lista de los volcanes ordenados del más alto al más bajo.
-  // Al tocar uno, cierra la lista y vuela hacia ese volcán en el mapa.
+  // Abre una lista de los volcanes ordenados del más alto al más bajo,
+  // con un buscador que filtra mientras escribes. Al tocar uno, cierra la
+  // lista y vuela hacia ese volcán en el mapa.
   void _mostrarLista() {
     final ordenados = [...volcanes]
       ..sort((a, b) => b.alturaM.compareTo(a.alturaM));
+    String busqueda = ''; // lo que el usuario escribe en el buscador
+
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
-      builder: (context) => ListView(
-        shrinkWrap: true,
-        children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 8),
-            child: Text('Volcanes (del más alto al más bajo)',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ),
-          for (final v in ordenados)
-            ListTile(
-              leading: Icon(
-                v.activo ? Icons.local_fire_department : Icons.terrain,
-                color: v.activo ? Colors.red : Colors.deepOrange,
+      isScrollControlled: true, // para que crezca con el teclado
+      builder: (context) {
+        // StatefulBuilder permite que la hoja se redibuje al escribir.
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            // Filtra por nombre o departamento (sin importar mayúsculas).
+            final q = busqueda.toLowerCase();
+            final filtrados = ordenados
+                .where((v) =>
+                    v.nombre.toLowerCase().contains(q) ||
+                    v.departamento.toLowerCase().contains(q))
+                .toList();
+
+            return Padding(
+              // Deja espacio cuando aparece el teclado.
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                    child: TextField(
+                      autofocus: false,
+                      decoration: const InputDecoration(
+                        labelText: 'Buscar volcán o departamento',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (texto) =>
+                          setSheetState(() => busqueda = texto),
+                    ),
+                  ),
+                  Flexible(
+                    child: filtrados.isEmpty
+                        ? const Padding(
+                            padding: EdgeInsets.all(24),
+                            child: Text('No se encontró ningún volcán.'),
+                          )
+                        : ListView(
+                            shrinkWrap: true,
+                            children: [
+                              for (final v in filtrados)
+                                ListTile(
+                                  leading: Icon(
+                                    v.activo
+                                        ? Icons.local_fire_department
+                                        : Icons.terrain,
+                                    color: v.activo
+                                        ? Colors.red
+                                        : Colors.deepOrange,
+                                  ),
+                                  title: Text(v.nombre),
+                                  subtitle: Text(
+                                      '${v.alturaM} m  ·  ${v.departamento}'),
+                                  trailing: v == _masAlto
+                                      ? const Icon(Icons.star,
+                                          color: Colors.amber)
+                                      : null,
+                                  onTap: () {
+                                    Navigator.pop(context); // cierra la lista
+                                    _mapController.move(
+                                        v.punto, 11); // vuela al volcán
+                                  },
+                                ),
+                            ],
+                          ),
+                  ),
+                ],
               ),
-              title: Text(v.nombre),
-              subtitle: Text('${v.alturaM} m  ·  ${v.departamento}'),
-              trailing: v == _masAlto
-                  ? const Icon(Icons.star, color: Colors.amber)
-                  : null,
-              onTap: () {
-                Navigator.pop(context); // cierra la lista
-                _mapController.move(v.punto, 11); // vuela al volcán
-              },
-            ),
-        ],
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
