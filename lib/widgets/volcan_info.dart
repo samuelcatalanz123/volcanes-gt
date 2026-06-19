@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/volcan.dart';
+import '../screens/navegacion_screen.dart';
 import 'foto_lugar.dart';
 import 'clima_vista.dart';
 
 /// Abre Google Maps con la ruta desde la ubicación del usuario hasta el volcán.
 Future<void> _comoLlegar(Volcan v) async {
+  // travelmode=driving + dir_action=navigate arranca la navegación EN CARRO
+  // (Google Maps te va guiando por voz: "gira aquí, sigue derecho").
   final url = Uri.parse(
-      'https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}');
-  await launchUrl(url, mode: LaunchMode.externalApplication);
+      'https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}'
+      '&travelmode=driving&dir_action=navigate');
+  await launchUrl(url,
+      mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
 }
 
 /// Muestra la info de un volcán en una hoja inferior (bottom sheet).
@@ -22,6 +27,7 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
     distanciaTexto = 'A ${(metros / 1000).toStringAsFixed(1)} km de ti';
   }
 
+  final ctxRaiz = context; // para abrir la pantalla de navegación
   showModalBottomSheet(
     context: context,
     showDragHandle: true,
@@ -64,16 +70,35 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
           const SizedBox(height: 12),
           Text(v.consejo, style: const TextStyle(height: 1.4)),
           const SizedBox(height: 16),
-          // Botón para abrir la ruta en Google Maps.
+          // Botón principal: navegación por voz DENTRO de la app.
           SizedBox(
             width: double.infinity,
             child: FilledButton.icon(
-              onPressed: () => _comoLlegar(v),
-              icon: const Icon(Icons.directions),
-              label: const Text('Cómo llegar'),
+              onPressed: () {
+                Navigator.pop(context); // cierra la tarjeta
+                Navigator.push(
+                  ctxRaiz,
+                  MaterialPageRoute(
+                    builder: (_) => NavegacionScreen(
+                        destino: v.punto, nombreDestino: v.nombre),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.navigation),
+              label: const Text('Navegar con voz 🗣️'),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Opción extra: abrir en Google Maps.
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => _comoLlegar(v),
+              icon: const Icon(Icons.map),
+              label: const Text('Abrir en Google Maps'),
             ),
           ),
         ],

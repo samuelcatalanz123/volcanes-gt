@@ -97,7 +97,16 @@ const List<Lugar> lugares = [
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/El_Toro_and_La_Mina_peaks_from_Las_Piedras_%282025%29.jpg/500px-El_Toro_and_La_Mina_peaks_from_Las_Piedras_%282025%29.jpg',
   ),
 
-  // ---- Ciudades turísticas 🏛️ ----
+  // ---- Ciudades y pueblos 🏛️ ----
+  Lugar(
+    nombre: 'Guazacapán',
+    lat: 14.0782,
+    lng: -90.4186,
+    tipo: TipoLugar.ciudad,
+    departamento: 'Santa Rosa',
+    descripcion: 'Pueblo de cultura xinca cerca de la costa del Pacífico, con su iglesia colonial. ¡El pueblo natal del creador de esta app! 🇬🇹',
+    foto: null,
+  ),
   Lugar(
     nombre: 'La Antigua Guatemala',
     lat: 14.5586,
@@ -105,7 +114,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Sacatepéquez',
     descripcion: 'Ciudad colonial Patrimonio de la Humanidad. Famosa por el Arco de Santa Catalina, sus iglesias y el empedrado. Rodeada por los volcanes de Agua, Fuego y Acatenango.',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Calle_del_Arco%2C_Antigua_Guatemala.jpg/500px-Calle_del_Arco%2C_Antigua_Guatemala.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Antigua_-_Arco.jpg',
   ),
   Lugar(
     nombre: 'Flores',
@@ -114,7 +123,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Petén',
     descripcion: 'Isla colorida en el lago Petén Itzá; puerta de entrada a las ruinas mayas de Tikal.',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flores_Pet%C3%A9n_Guatemala.jpg/500px-Flores_Pet%C3%A9n_Guatemala.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Flores_Island.jpg',
   ),
   Lugar(
     nombre: 'Cobán',
@@ -123,6 +132,6 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Alta Verapaz',
     descripcion: 'Tierra del café y las orquídeas; cerca de Semuc Champey y las grutas de Lanquín.',
-    foto: null,
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Collage_of_Coban.jpg',
   ),
 ];
