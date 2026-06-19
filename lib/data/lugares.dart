@@ -96,4 +96,33 @@ const List<Lugar> lugares = [
     descripcion: 'Reserva de biosfera con bosque nuboso y mucha fauna.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/El_Toro_and_La_Mina_peaks_from_Las_Piedras_%282025%29.jpg/500px-El_Toro_and_La_Mina_peaks_from_Las_Piedras_%282025%29.jpg',
   ),
+
+  // ---- Ciudades turísticas 🏛️ ----
+  Lugar(
+    nombre: 'La Antigua Guatemala',
+    lat: 14.5586,
+    lng: -90.7295,
+    tipo: TipoLugar.ciudad,
+    departamento: 'Sacatepéquez',
+    descripcion: 'Ciudad colonial Patrimonio de la Humanidad. Famosa por el Arco de Santa Catalina, sus iglesias y el empedrado. Rodeada por los volcanes de Agua, Fuego y Acatenango.',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Calle_del_Arco%2C_Antigua_Guatemala.jpg/500px-Calle_del_Arco%2C_Antigua_Guatemala.jpg',
+  ),
+  Lugar(
+    nombre: 'Flores',
+    lat: 16.9281,
+    lng: -89.8917,
+    tipo: TipoLugar.ciudad,
+    departamento: 'Petén',
+    descripcion: 'Isla colorida en el lago Petén Itzá; puerta de entrada a las ruinas mayas de Tikal.',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flores_Pet%C3%A9n_Guatemala.jpg/500px-Flores_Pet%C3%A9n_Guatemala.jpg',
+  ),
+  Lugar(
+    nombre: 'Cobán',
+    lat: 15.4711,
+    lng: -90.3711,
+    tipo: TipoLugar.ciudad,
+    departamento: 'Alta Verapaz',
+    descripcion: 'Tierra del café y las orquídeas; cerca de Semuc Champey y las grutas de Lanquín.',
+    foto: null,
+  ),
 ];

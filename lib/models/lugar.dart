@@ -1,9 +1,9 @@
 import 'package:latlong2/latlong.dart';
 
 /// Tipos de lugar turístico que mostramos en el mapa (además de los volcanes).
-enum TipoLugar { lago, playa, montana }
+enum TipoLugar { lago, playa, montana, ciudad }
 
-/// Un lugar turístico de Guatemala: un lago, una playa o una montaña.
+/// Un lugar turístico de Guatemala: un lago, una playa, una montaña o una ciudad.
 class Lugar {
   final String nombre;
   final double lat;

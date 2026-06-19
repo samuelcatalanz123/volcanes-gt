@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/volcan.dart';
 import 'foto_lugar.dart';
 import 'clima_vista.dart';
+
+/// Abre Google Maps con la ruta desde la ubicación del usuario hasta el volcán.
+Future<void> _comoLlegar(Volcan v) async {
+  final url = Uri.parse(
+      'https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}');
+  await launchUrl(url, mode: LaunchMode.externalApplication);
+}
 
 /// Muestra la info de un volcán en una hoja inferior (bottom sheet).
 /// Si [desde] no es null (la ubicación del usuario), muestra la distancia.
@@ -55,6 +63,19 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
           ClimaVista(lat: v.lat, lng: v.lng),
           const SizedBox(height: 12),
           Text(v.consejo, style: const TextStyle(height: 1.4)),
+          const SizedBox(height: 16),
+          // Botón para abrir la ruta en Google Maps.
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: () => _comoLlegar(v),
+              icon: const Icon(Icons.directions),
+              label: const Text('Cómo llegar'),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+              ),
+            ),
+          ),
         ],
       ),
     ),
