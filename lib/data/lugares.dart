@@ -10,6 +10,9 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.lago,
     departamento: 'Sololá',
     descripcion: 'Lago rodeado de volcanes, uno de los más bellos del mundo.',
+    mejorEpoca: 'Noviembre a abril (época seca, cielos despejados).',
+    comida: 'Pescado del lago y cocina kaqchikel en los pueblos de la orilla.',
+    dato: 'Aldous Huxley lo llamó "el lago más hermoso del mundo".',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/1_lake_atitlan_panorama_2009.jpg/500px-1_lake_atitlan_panorama_2009.jpg',
   ),
   Lugar(
@@ -19,6 +22,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.lago,
     departamento: 'Izabal',
     descripcion: 'El lago más grande de Guatemala; cerca del Río Dulce.',
+    comida: 'Tapado (sopa de mariscos con coco) y pescado del Caribe.',
+    dato: 'Es el lago más grande del país; lo vigila el Castillo de San Felipe.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Beach_in_Izabal%2C_Guatemala.jpg/500px-Beach_in_Izabal%2C_Guatemala.jpg',
   ),
   Lugar(
@@ -48,6 +53,9 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.playa,
     departamento: 'Santa Rosa',
     descripcion: 'Playa de arena negra; famosa por las tortugas marinas.',
+    mejorEpoca: 'Todo el año; de julio a diciembre liberan tortuguitas.',
+    comida: 'Pescado frito, camarón y coco fresco a la orilla.',
+    dato: 'Su arena es negra por el origen volcánico, y tiene un tortugario.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Monterrico_68.jpg/500px-Monterrico_68.jpg',
   ),
   Lugar(
@@ -114,6 +122,9 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Sacatepéquez',
     descripcion: 'Ciudad colonial Patrimonio de la Humanidad. Famosa por el Arco de Santa Catalina, sus iglesias y el empedrado. Rodeada por los volcanes de Agua, Fuego y Acatenango.',
+    mejorEpoca: 'Seca (nov–abr); Semana Santa por sus famosas alfombras.',
+    comida: 'Pepián, plátanos en mole y dulces típicos.',
+    dato: 'Fue la capital del Reino de Guatemala hasta los terremotos de 1773.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Antigua_-_Arco.jpg',
   ),
   Lugar(
@@ -123,6 +134,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Petén',
     descripcion: 'Isla colorida en el lago Petén Itzá; puerta de entrada a las ruinas mayas de Tikal.',
+    comida: 'Cocina petenera; pescado blanco del lago Petén Itzá.',
+    dato: 'Fue la última ciudad maya independiente; cayó hasta 1697.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Flores_Island.jpg',
   ),
   Lugar(
@@ -132,6 +145,9 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Alta Verapaz',
     descripcion: 'Tierra del café y las orquídeas; cerca de Semuc Champey y las grutas de Lanquín.',
+    mejorEpoca: 'Casi siempre fresco y lluvioso (clima de bosque nuboso).',
+    comida: 'Kak\'ik, el caldo de chunto, emblema de Alta Verapaz.',
+    dato: 'Aquí crece la Monja Blanca, la flor nacional de Guatemala.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Collage_of_Coban.jpg',
   ),
   Lugar(
@@ -152,6 +168,10 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Petén',
     descripcion: 'Ciudad maya monumental en la selva del Petén, Patrimonio de la Humanidad. Sus templos-pirámide se alzan sobre el bosque tropical.',
+    mejorEpoca: 'Seca (nov–abr); muy temprano para ver fauna y el amanecer.',
+    entrada: 'Sí: es parque nacional, con tarifa para nacionales y extranjeros.',
+    comida: 'Cocina petenera (pavo, caldos); restaurantes cerca, en Flores.',
+    dato: 'El Templo IV salió en Star Wars como una luna del planeta Yavin.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Tikal_Temple_II.jpg/500px-Tikal_Temple_II.jpg',
   ),
   Lugar(
@@ -161,6 +181,10 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Alta Verapaz',
     descripcion: 'Pozas de agua turquesa sobre un puente natural de roca caliza, en plena selva del río Cahabón. Una de las maravillas naturales del país.',
+    mejorEpoca: 'Seca (nov–abr); en lluvias el agua baja turbia.',
+    entrada: 'Sí, cobro de ingreso al parque natural.',
+    comida: 'Kak\'ik (caldo de chunto), platillo típico de Alta Verapaz.',
+    dato: 'En q\'eqchi\' significa "donde el río se esconde": el Cahabón pasa por debajo.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Semuc_Champey%2C_Guatemala.jpg/500px-Semuc_Champey%2C_Guatemala.jpg',
   ),
   Lugar(
@@ -170,6 +194,9 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Quiché',
     descripcion: 'Pueblo k\'iche\' famoso por su colorido mercado (jueves y domingo) y la iglesia de Santo Tomás.',
+    mejorEpoca: 'Jueves y domingo, los días de mercado.',
+    comida: 'Caldos k\'iche\' y atol de elote.',
+    dato: 'En la iglesia de Santo Tomás se mezclan ritos católicos y mayas.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Chichicastenango_market.jpg/500px-Chichicastenango_market.jpg',
   ),
   Lugar(
@@ -179,6 +206,9 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Izabal',
     descripcion: 'Río de aguas verdes entre cañones de selva que une el lago de Izabal con el Caribe. Famoso por sus paseos en lancha hasta Lívingston.',
+    mejorEpoca: 'Todo el año; ideal para paseos en lancha.',
+    comida: 'Tapado garífuna y pescado fresco.',
+    dato: 'Su cañón de selva guarda el antiguo Castillo de San Felipe de Lara.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Rio_Dulce_Guatemala02.jpg/500px-Rio_Dulce_Guatemala02.jpg',
   ),
   Lugar(
@@ -188,6 +218,9 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Izabal',
     descripcion: 'Sitio arqueológico maya famoso por sus enormes estelas y zoomorfos de piedra tallada. Patrimonio de la Humanidad.',
+    entrada: 'Sí, cobro de ingreso al parque arqueológico.',
+    comida: 'Cocina de Izabal: tapado, yuca y pescado.',
+    dato: 'Tiene la estela más alta del mundo maya: la Estela E, de casi 8 metros.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Quirigu%C3%A1_%282004%29_15.jpg/500px-Quirigu%C3%A1_%282004%29_15.jpg',
   ),
   Lugar(
@@ -197,6 +230,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Sololá',
     descripcion: 'Puerta de entrada al lago de Atitlán. Su Calle Santander está llena de artesanías, y desde la orilla se ven los tres volcanes del lago.',
+    comida: 'Pescado del lago y cocina internacional en la Calle Santander.',
+    dato: 'Le dicen "Pana"; de aquí salen las lanchas a los pueblos del lago.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Panajachel_lake_atitlan_2009r.JPG/500px-Panajachel_lake_atitlan_2009r.JPG',
   ),
   Lugar(
@@ -206,6 +241,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Izabal',
     descripcion: 'Pueblo caribeño garífuna al que solo se llega por lancha. Cultura afrodescendiente, el platillo tapado y las playas del Atlántico.',
+    comida: 'Tapado, pan de coco y "rice and beans" garífunas.',
+    dato: 'Solo se llega por lancha; es cuna de la cultura garífuna y la música punta.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Livingston%2C_Izabal_-_Guatemala.jpg/500px-Livingston%2C_Izabal_-_Guatemala.jpg',
   ),
   Lugar(
@@ -215,6 +252,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Petén',
     descripcion: 'Ciudad maya junto a una laguna, con templos perfectos para ver el atardecer sobre la selva del Petén.',
+    entrada: 'Sí, cobro de ingreso al parque.',
+    dato: 'Aquí se grabó el reality "Survivor: Guatemala".',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Yaxha_von_oben.jpg/500px-Yaxha_von_oben.jpg',
   ),
   Lugar(
@@ -224,6 +263,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Petén',
     descripcion: 'Ciudad maya remota en la selva, hogar de La Danta, una de las pirámides más grandes del mundo. Se llega caminando varios días o en helicóptero.',
+    mejorEpoca: 'Seca (nov–abr); la caminata dura varios días.',
+    dato: 'La Danta es una de las pirámides más voluminosas del planeta.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flickr_-_archer10_%28Dennis%29_-_Guatemala_1828_-_La_Danta_at_the_Mayan_site_of_El_Mirador.jpg/500px-Flickr_-_archer10_%28Dennis%29_-_Guatemala_1828_-_La_Danta_at_the_Mayan_site_of_El_Mirador.jpg',
   ),
 ];

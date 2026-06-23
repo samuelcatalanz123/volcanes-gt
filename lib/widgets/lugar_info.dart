@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/lugar.dart';
 import '../screens/navegacion_screen.dart';
 import '../services/favoritos.dart';
+import 'datos_extra.dart';
 import 'foto_lugar.dart';
 
 /// El ícono que representa cada tipo de lugar.
@@ -109,6 +110,12 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
           ]),
           const SizedBox(height: 12),
           Text(l.descripcion, style: const TextStyle(height: 1.4)),
+          DatosExtra(
+            mejorEpoca: l.mejorEpoca,
+            entrada: l.entrada,
+            comida: l.comida,
+            dato: l.dato,
+          ),
           const SizedBox(height: 16),
           // Botón principal: navegación por voz DENTRO de la app.
           SizedBox(

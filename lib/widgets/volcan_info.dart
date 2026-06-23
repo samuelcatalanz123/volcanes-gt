@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/volcan.dart';
 import '../screens/navegacion_screen.dart';
 import '../services/favoritos.dart';
+import 'datos_extra.dart';
 import 'foto_lugar.dart';
 import 'clima_vista.dart';
 
@@ -87,6 +88,12 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
           ClimaVista(lat: v.lat, lng: v.lng),
           const SizedBox(height: 12),
           Text(v.consejo, style: const TextStyle(height: 1.4)),
+          DatosExtra(
+            mejorEpoca: v.mejorEpoca,
+            entrada: v.entrada,
+            comida: v.comida,
+            dato: v.dato,
+          ),
           const SizedBox(height: 16),
           // Botón principal: navegación por voz DENTRO de la app.
           SizedBox(
