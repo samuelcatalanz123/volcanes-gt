@@ -34,7 +34,16 @@ void main() {
   });
 
   test('los nuevos sitios famosos aparecen al buscarlos', () {
-    for (final nombre in ['Tikal', 'Semuc Champey', 'Quiriguá', 'Río Dulce']) {
+    for (final nombre in [
+      'Tikal',
+      'Semuc Champey',
+      'Quiriguá',
+      'Río Dulce',
+      'Panajachel',
+      'Lívingston',
+      'Yaxhá',
+      'El Mirador',
+    ]) {
       final res = buscarTodo(nombre);
       expect(res.any((r) => !r.esVolcan && r.nombre == nombre), true,
           reason: 'Debe encontrarse el sitio "$nombre"');
