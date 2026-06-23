@@ -63,6 +63,16 @@ Future<void> _comoLlegar(Lugar l) async {
       mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
 }
 
+/// Comparte el lugar por WhatsApp, con un mensaje y un enlace a su ubicación.
+Future<void> _compartir(Lugar l) async {
+  final ubic =
+      'https://www.google.com/maps/search/?api=1&query=${l.lat},${l.lng}';
+  final texto = Uri.encodeComponent(
+      '¡Visita ${l.nombre} en Guatemala! 🌋\n$ubic\n\nCompartido desde Volcanes GT');
+  await launchUrl(Uri.parse('https://wa.me/?text=$texto'),
+      mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
+}
+
 /// Muestra la info de un lugar en una hoja inferior (bottom sheet).
 void mostrarLugarInfo(BuildContext context, Lugar l) {
   final ctxRaiz = context; // para abrir la pantalla de navegación
@@ -126,6 +136,16 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
               onPressed: () => _comoLlegar(l),
               icon: const Icon(Icons.map),
               label: const Text('Abrir en Google Maps'),
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Compartir el lugar por WhatsApp.
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => _compartir(l),
+              icon: const Icon(Icons.share),
+              label: const Text('Compartir 📲'),
             ),
           ),
         ],

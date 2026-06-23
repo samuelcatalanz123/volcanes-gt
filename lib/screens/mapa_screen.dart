@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../data/volcanes.dart';
 import '../data/lugares.dart';
 import '../data/departamentos.dart';
@@ -109,6 +110,55 @@ class _MapaScreenState extends State<MapaScreen> {
             child: const Text('Cerrar'),
           ),
         ],
+      ),
+    );
+  }
+
+  // Marca un número de teléfono (abre la app de llamadas del dispositivo).
+  Future<void> _llamar(String numero) async {
+    await launchUrl(Uri.parse('tel:$numero'));
+  }
+
+  // Muestra una hoja con los teléfonos de emergencia de Guatemala. Al tocar
+  // uno, marca el número.
+  void _mostrarEmergencias() {
+    const numeros = <(String, String, String)>[
+      ('🚓', 'Policía (PNC)', '110'),
+      ('🚒', 'Bomberos Voluntarios', '122'),
+      ('🚑', 'Bomberos Municipales', '123'),
+      ('🧳', 'Asistencia al turista (Asistur)', '1500'),
+      ('🌋', 'Desastres (Conred)', '119'),
+    ];
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 8),
+              child: Row(children: [
+                Icon(Icons.sos, color: Colors.red),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Text('Teléfonos de emergencia',
+                      style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold)),
+                ),
+              ]),
+            ),
+            for (final (emoji, nombre, numero) in numeros)
+              ListTile(
+                leading: Text(emoji, style: const TextStyle(fontSize: 24)),
+                title: Text(nombre),
+                subtitle: Text(numero),
+                trailing: const Icon(Icons.phone, color: Colors.green),
+                onTap: () => _llamar(numero),
+              ),
+            const SizedBox(height: 12),
+          ],
+        ),
       ),
     );
   }
@@ -342,8 +392,13 @@ class _MapaScreenState extends State<MapaScreen> {
         title: Text('🌋 ${volcanes.length} Volcanes de Guatemala'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.sos, color: Colors.red),
+            tooltip: 'Emergencias',
+            onPressed: _mostrarEmergencias,
+          ),
+          IconButton(
             icon: const Icon(Icons.list),
-            tooltip: 'Lista por altura',
+            tooltip: 'Buscar y lista',
             onPressed: _mostrarLista,
           ),
           IconButton(

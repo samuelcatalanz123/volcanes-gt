@@ -17,6 +17,16 @@ Future<void> _comoLlegar(Volcan v) async {
       mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
 }
 
+/// Comparte el volcán por WhatsApp, con un mensaje y un enlace a su ubicación.
+Future<void> _compartir(Volcan v) async {
+  final ubic =
+      'https://www.google.com/maps/search/?api=1&query=${v.lat},${v.lng}';
+  final texto = Uri.encodeComponent(
+      '¡Visita ${v.nombre} en Guatemala! 🌋\n$ubic\n\nCompartido desde Volcanes GT');
+  await launchUrl(Uri.parse('https://wa.me/?text=$texto'),
+      mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
+}
+
 /// Muestra la info de un volcán en una hoja inferior (bottom sheet).
 /// Si [desde] no es null (la ubicación del usuario), muestra la distancia.
 void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
@@ -99,6 +109,16 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
               onPressed: () => _comoLlegar(v),
               icon: const Icon(Icons.map),
               label: const Text('Abrir en Google Maps'),
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Compartir el volcán por WhatsApp.
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => _compartir(v),
+              icon: const Icon(Icons.share),
+              label: const Text('Compartir 📲'),
             ),
           ),
         ],
