@@ -141,6 +141,6 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Escuintla',
     descripcion: 'Cabecera departamental, ciudad cálida cerca de la costa del Pacífico. Paso obligado hacia las playas del Pacífico y al pie del volcán de Pacaya.',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/EsquintlaGuatemala.jpg',
+    foto: 'assets/fotos/garita-escuintla.jpg',
   ),
 ];

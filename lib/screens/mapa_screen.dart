@@ -11,6 +11,7 @@ import '../services/gasolineras.dart';
 import '../services/busqueda.dart';
 import '../widgets/volcan_info.dart';
 import '../widgets/lugar_info.dart';
+import '../widgets/foto_lugar.dart';
 
 class MapaScreen extends StatefulWidget {
   const MapaScreen({super.key});
@@ -299,7 +300,7 @@ class _MapaScreenState extends State<MapaScreen> {
       leading: l.foto != null
           ? ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              child: Image.network(
+              child: imagenDeFoto(
                 l.foto!,
                 width: 54,
                 height: 54,

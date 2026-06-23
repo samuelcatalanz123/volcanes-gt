@@ -63,6 +63,10 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  # Fotos locales (p. ej. la garita de Escuintla, que no existe en Wikimedia).
+  assets:
+    - assets/fotos/
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
