@@ -11,6 +11,7 @@ import '../services/ubicacion.dart';
 import '../services/gasolineras.dart';
 import '../services/busqueda.dart';
 import '../services/favoritos.dart';
+import '../services/tema.dart';
 import '../widgets/volcan_info.dart';
 import '../widgets/lugar_info.dart';
 import '../widgets/foto_lugar.dart';
@@ -445,6 +446,11 @@ class _MapaScreenState extends State<MapaScreen> {
             icon: const Icon(Icons.sos, color: Colors.red),
             tooltip: 'Emergencias',
             onPressed: _mostrarEmergencias,
+          ),
+          IconButton(
+            icon: Icon(Tema.esOscuro ? Icons.light_mode : Icons.dark_mode),
+            tooltip: Tema.esOscuro ? 'Modo claro' : 'Modo oscuro',
+            onPressed: () => Tema.alternar(),
           ),
           IconButton(
             icon: const Icon(Icons.list),

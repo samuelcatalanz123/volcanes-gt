@@ -87,8 +87,11 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Foto del lugar (si tiene), con respaldo si no carga.
-          if (l.foto != null) ...[
+          // Galería (si tiene varias fotos) o una sola foto.
+          if (l.fotos != null && l.fotos!.length > 1) ...[
+            GaleriaFotos(fotos: l.fotos!),
+            const SizedBox(height: 12),
+          ] else if (l.foto != null) ...[
             FotoLugar(url: l.foto!),
             const SizedBox(height: 12),
           ],

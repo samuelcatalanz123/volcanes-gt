@@ -12,6 +12,8 @@ class Lugar {
   final String departamento;
   final String descripcion;
   final String? foto; // URL de una foto (de Wikipedia); puede ser null
+  // Galería opcional: si tiene varias fotos, se muestran deslizables.
+  final List<String>? fotos;
   // Datos extra opcionales (se muestran solo si no son null).
   final String? mejorEpoca; // 📅 mejor época para visitar
   final String? entrada; // 🎟️ si cobran entrada
@@ -26,6 +28,7 @@ class Lugar {
     required this.departamento,
     required this.descripcion,
     this.foto,
+    this.fotos,
     this.mejorEpoca,
     this.entrada,
     this.comida,

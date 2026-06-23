@@ -173,6 +173,11 @@ const List<Lugar> lugares = [
     comida: 'Cocina petenera (pavo, caldos); restaurantes cerca, en Flores.',
     dato: 'El Templo IV salió en Star Wars como una luna del planeta Yavin.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Tikal_Temple_II.jpg/500px-Tikal_Temple_II.jpg',
+    fotos: [
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Tikal_Temple_II.jpg/500px-Tikal_Temple_II.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tikal_Temple_III_roof_comb_1.jpg/500px-Tikal_Temple_III_roof_comb_1.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Tikal_temple_jaguar.jpg/500px-Tikal_temple_jaguar.jpg',
+    ],
   ),
   Lugar(
     nombre: 'Semuc Champey',
@@ -186,6 +191,11 @@ const List<Lugar> lugares = [
     comida: 'Kak\'ik (caldo de chunto), platillo típico de Alta Verapaz.',
     dato: 'En q\'eqchi\' significa "donde el río se esconde": el Cahabón pasa por debajo.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Semuc_Champey%2C_Guatemala.jpg/500px-Semuc_Champey%2C_Guatemala.jpg',
+    fotos: [
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Semuc_Champey%2C_Guatemala.jpg/500px-Semuc_Champey%2C_Guatemala.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Cahab%C3%B3n_River%2C_Semuc_Champey%2C_Guatemala.jpg/500px-Cahab%C3%B3n_River%2C_Semuc_Champey%2C_Guatemala.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Semuc_Champey_3.jpg/500px-Semuc_Champey_3.jpg',
+    ],
   ),
   Lugar(
     nombre: 'Chichicastenango',
@@ -198,6 +208,11 @@ const List<Lugar> lugares = [
     comida: 'Caldos k\'iche\' y atol de elote.',
     dato: 'En la iglesia de Santo Tomás se mezclan ritos católicos y mayas.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Chichicastenango_market.jpg/500px-Chichicastenango_market.jpg',
+    fotos: [
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Chichicastenango_market.jpg/500px-Chichicastenango_market.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Chichicastenango_Market_%28Guatemala%2C_March_2020%29_-_115.jpg/500px-Chichicastenango_Market_%28Guatemala%2C_March_2020%29_-_115.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Chichicastenango_Market_%28Guatemala%2C_March_2020%29_-_120.jpg/500px-Chichicastenango_Market_%28Guatemala%2C_March_2020%29_-_120.jpg',
+    ],
   ),
   Lugar(
     nombre: 'Río Dulce',
