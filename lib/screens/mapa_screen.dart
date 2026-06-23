@@ -13,6 +13,7 @@ import '../services/busqueda.dart';
 import '../services/favoritos.dart';
 import '../services/tema.dart';
 import '../services/idioma.dart';
+import '../services/conexion.dart';
 import '../widgets/volcan_info.dart';
 import '../widgets/lugar_info.dart';
 import '../widgets/foto_lugar.dart';
@@ -479,8 +480,12 @@ class _MapaScreenState extends State<MapaScreen> {
           ),
         ],
       ),
-      body: Stack(
+      body: Column(
         children: [
+          const _BannerSinInternet(),
+          Expanded(
+            child: Stack(
+              children: [
           FlutterMap(
         mapController: _mapController,
         options: MapOptions(
@@ -748,6 +753,9 @@ class _MapaScreenState extends State<MapaScreen> {
               ),
             ),
           ),
+              ],
+            ),
+          ),
         ],
       ),
       floatingActionButton: Column(
@@ -824,6 +832,38 @@ class _MapaScreenState extends State<MapaScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// Aviso naranja que aparece arriba cuando NO hay internet.
+class _BannerSinInternet extends StatelessWidget {
+  const _BannerSinInternet();
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: Conexion.hayInternet,
+      builder: (context, hay, _) {
+        if (hay) return const SizedBox.shrink();
+        return Material(
+          color: Colors.orange.shade800,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(children: [
+              const Icon(Icons.wifi_off, color: Colors.white, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  tr('Sin internet. El mapa, el clima y las fotos necesitan conexión.',
+                      'No internet. The map, weather and photos need a connection.'),
+                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                ),
+              ),
+            ]),
+          ),
+        );
+      },
     );
   }
 }

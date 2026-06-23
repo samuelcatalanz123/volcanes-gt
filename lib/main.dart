@@ -3,12 +3,14 @@ import 'screens/mapa_screen.dart';
 import 'services/favoritos.dart';
 import 'services/tema.dart';
 import 'services/idioma.dart';
+import 'services/conexion.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Favoritos.cargar(); // recupera los favoritos guardados
   await Tema.cargar(); // recupera el tema (claro/oscuro) guardado
   await Idioma.cargar(); // recupera el idioma (español/inglés) guardado
+  await Conexion.iniciar(); // empieza a vigilar la conexión a internet
   runApp(const VolcanesApp());
 }
 
