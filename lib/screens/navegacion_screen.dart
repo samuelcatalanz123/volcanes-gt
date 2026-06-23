@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import '../services/navegacion.dart';
 import '../services/ubicacion.dart';
+import '../services/idioma.dart';
 
 /// Pantalla de navegación paso a paso: dibuja la ruta, sigue tu GPS y te va
 /// diciendo por voz qué hacer ("gira a la derecha, sigue derecho").
@@ -31,8 +32,8 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
   Ruta? _ruta;
   LatLng? _yo;
   int _paso = 0; // próxima maniobra por anunciar
-  String _estado = 'Calculando la ruta…';
-  String _origenNombre = 'Tu ubicación';
+  String _estado = '';
+  String _origenNombre = '';
   bool _cargando = true;
   bool _vozLista = false; // ¿el usuario ya tocó 🔊 para activar la voz?
 
@@ -47,8 +48,9 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
   @override
   void initState() {
     super.initState();
-    _tts.setLanguage('es-ES');
+    _tts.setLanguage(Idioma.esIngles ? 'en-US' : 'es-ES');
     _tts.setSpeechRate(0.5);
+    _estado = tr('Calculando la ruta…', 'Calculating route…');
     _iniciar();
   }
 
@@ -56,7 +58,7 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
   Future<void> _iniciar() async {
     final gps = await obtenerUbicacion();
     if (gps != null) {
-      _calcularRuta(gps, 'Tu ubicación', seguirGPS: true);
+      _calcularRuta(gps, tr('Tu ubicación', 'Your location'), seguirGPS: true);
     } else {
       _calcularRuta(_ciudades['Guazacapán']!, 'Guazacapán', seguirGPS: false);
     }
@@ -68,13 +70,14 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
     _gps?.cancel();
     setState(() {
       _cargando = true;
-      _estado = 'Calculando la ruta…';
+      _estado = tr('Calculando la ruta…', 'Calculating route…');
     });
     final ruta = await obtenerRuta(origen, widget.destino);
     if (ruta == null || ruta.pasos.isEmpty) {
       setState(() {
         _cargando = false;
-        _estado = 'No pude calcular la ruta. Revisa tu internet.';
+        _estado = tr('No pude calcular la ruta. Revisa tu internet.',
+            'Couldn\'t calculate the route. Check your internet.');
       });
       return;
     }
@@ -87,7 +90,8 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
       _estado = ruta.pasos[_paso].instruccion;
     });
     _map.move(origen, 14);
-    _hablar('Ruta desde $nombre. ${_ruta!.pasos[_paso].instruccion}');
+    _hablar(tr('Ruta desde $nombre. ${_ruta!.pasos[_paso].instruccion}',
+        'Route from $nombre. ${_ruta!.pasos[_paso].instruccion}'));
     if (seguirGPS) _seguirGPS(); // solo seguimos el GPS si arrancamos con él
   }
 
@@ -145,13 +149,14 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
     final ruta = _ruta;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hacia ${widget.nombreDestino}'),
+        title: Text(tr('Hacia ${widget.nombreDestino}',
+            'To ${widget.nombreDestino}')),
         backgroundColor: Colors.blue.shade700,
         foregroundColor: Colors.white,
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(Icons.my_location),
-            tooltip: 'Elegir desde dónde salir',
+            tooltip: tr('Elegir desde dónde salir', 'Choose where to start from'),
             onSelected: (op) {
               if (op == 'gps') {
                 _iniciar(); // intenta el GPS de nuevo
@@ -160,10 +165,12 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
               }
             },
             itemBuilder: (_) => [
-              const PopupMenuItem(
-                  value: 'gps', child: Text('📍 Desde mi ubicación (GPS)')),
-              ..._ciudades.keys.map((c) =>
-                  PopupMenuItem(value: c, child: Text('🏙️ Desde $c'))),
+              PopupMenuItem(
+                  value: 'gps',
+                  child: Text(tr('📍 Desde mi ubicación (GPS)',
+                      '📍 From my location (GPS)'))),
+              ..._ciudades.keys.map((c) => PopupMenuItem(
+                  value: c, child: Text(tr('🏙️ Desde $c', '🏙️ From $c')))),
             ],
           ),
         ],
@@ -246,11 +253,12 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
                           ),
                           // Pista que aparece hasta que tocas 🔊 la primera vez.
                           if (!_cargando && !_vozLista)
-                            const Padding(
-                              padding: EdgeInsets.only(top: 4),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
                               child: Text(
-                                'Toca 🔊 para oír las indicaciones',
-                                style: TextStyle(
+                                tr('Toca 🔊 para oír las indicaciones',
+                                    'Tap 🔊 to hear directions'),
+                                style: const TextStyle(
                                     color: Colors.white70, fontSize: 12),
                               ),
                             ),
@@ -260,7 +268,7 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
                     // Botón de voz: desbloquea y repite la instrucción actual.
                     IconButton(
                       onPressed: _cargando ? null : _repetirVoz,
-                      tooltip: 'Escuchar la instrucción',
+                      tooltip: tr('Escuchar la instrucción', 'Hear the instruction'),
                       icon: const Icon(Icons.volume_up,
                           color: Colors.white, size: 28),
                     ),
@@ -292,7 +300,7 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
                               '${ruta.distanciaKm.toStringAsFixed(1)} km  ·  ${ruta.duracionMin} min',
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Text('Desde $_origenNombre',
+                            Text(tr('Desde $_origenNombre', 'From $_origenNombre'),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.grey.shade600)),
                           ],
@@ -301,7 +309,7 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
                       FilledButton.icon(
                         onPressed: () => Navigator.pop(context),
                         icon: const Icon(Icons.close),
-                        label: const Text('Terminar'),
+                        label: Text(tr('Terminar', 'End')),
                         style: FilledButton.styleFrom(
                             backgroundColor: Colors.red),
                       ),

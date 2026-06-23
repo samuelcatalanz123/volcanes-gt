@@ -89,29 +89,31 @@ class _MapaScreenState extends State<MapaScreen> {
           SizedBox(width: 8),
           Text('Volcanes GT'),
         ]),
-        content: const Column(
+        content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Creado por', style: TextStyle(color: Colors.black54)),
-            SizedBox(height: 2),
-            Text('Samuel Catalán',
-                style:
-                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Text('Creador del mapa de Guatemala y muchos proyectos más. 🇬🇹',
-                style: TextStyle(height: 1.4)),
-            SizedBox(height: 12),
+            Text(tr('Creado por', 'Created by')),
+            const SizedBox(height: 2),
+            const Text('Samuel Catalán',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
             Text(
-              'Datos de OpenStreetMap, Open-Meteo y Wikimedia (uso libre).',
-              style: TextStyle(fontSize: 12, color: Colors.black54),
+                tr('Creador del mapa de Guatemala y muchos proyectos más. 🇬🇹',
+                    'Creator of the map of Guatemala and many more projects. 🇬🇹'),
+                style: const TextStyle(height: 1.4)),
+            const SizedBox(height: 12),
+            Text(
+              tr('Datos de OpenStreetMap, Open-Meteo y Wikimedia (uso libre).',
+                  'Data from OpenStreetMap, Open-Meteo and Wikimedia (free use).'),
+              style: const TextStyle(fontSize: 12),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cerrar'),
+            child: Text(tr('Cerrar', 'Close')),
           ),
         ],
       ),
@@ -176,7 +178,7 @@ class _MapaScreenState extends State<MapaScreen> {
 
   // Pide a OpenStreetMap las gasolineras de la zona que se ve ahora.
   Future<void> _buscarGasolineras() => _buscarEnZona(
-        nombre: 'gasolineras',
+        nombre: tr('gasolineras', 'gas stations'),
         emoji: '⛽',
         buscar: buscarGasolineras,
         guardar: (lista) => _gasolineras = lista,
@@ -185,7 +187,7 @@ class _MapaScreenState extends State<MapaScreen> {
 
   // Pide a OpenStreetMap las aldeas de la zona que se ve ahora.
   Future<void> _buscarAldeas() => _buscarEnZona(
-        nombre: 'aldeas',
+        nombre: tr('aldeas', 'villages'),
         emoji: '🏘️',
         buscar: buscarAldeas,
         guardar: (lista) => _aldeas = lista,
@@ -196,8 +198,9 @@ class _MapaScreenState extends State<MapaScreen> {
   Future<void> _buscarRios() async {
     final camara = _mapController.camera;
     if (camara.zoom < 9) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Acércate más al mapa para buscar ríos 🏞️'),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(tr('Acércate más al mapa para buscar ríos 🏞️',
+            'Zoom in to search for rivers 🏞️')),
       ));
       return;
     }
@@ -207,12 +210,14 @@ class _MapaScreenState extends State<MapaScreen> {
       if (!mounted) return;
       setState(() => _rios = encontrados);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Se encontraron ${encontrados.length} ríos 🏞️'),
+        content: Text(tr('Se encontraron ${encontrados.length} ríos 🏞️',
+            'Found ${encontrados.length} rivers 🏞️')),
       ));
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('No se pudieron cargar los ríos. Intenta otra vez.'),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(tr('No se pudieron cargar los ríos. Intenta otra vez.',
+            'Couldn\'t load the rivers. Try again.')),
       ));
     } finally {
       if (mounted) setState(() => _cargandoRios = false);
@@ -231,7 +236,8 @@ class _MapaScreenState extends State<MapaScreen> {
     final camara = _mapController.camera;
     if (camara.zoom < 11) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Acércate más al mapa para buscar $nombre $emoji'),
+        content: Text(tr('Acércate más al mapa para buscar $nombre $emoji',
+            'Zoom in to search for $nombre $emoji')),
       ));
       return;
     }
@@ -241,12 +247,14 @@ class _MapaScreenState extends State<MapaScreen> {
       if (!mounted) return;
       setState(() => guardar(encontrados));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Se encontraron ${encontrados.length} $nombre $emoji'),
+        content: Text(tr('Se encontraron ${encontrados.length} $nombre $emoji',
+            'Found ${encontrados.length} $nombre $emoji')),
       ));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('No se pudieron cargar las $nombre. Intenta otra vez.'),
+        content: Text(tr('No se pudieron cargar las $nombre. Intenta otra vez.',
+            'Couldn\'t load the $nombre. Try again.')),
       ));
     } finally {
       if (mounted) setState(() => marcarCargando(false));
@@ -634,7 +642,8 @@ class _MapaScreenState extends State<MapaScreen> {
                       onTap: () => ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                               content: Text(
-                                  'Departamento de ${d.nombre} · cabecera: ${d.cabecera}'))),
+                                  tr('Departamento de ${d.nombre} · cabecera: ${d.cabecera}',
+                                      'Department of ${d.nombre} · capital: ${d.cabecera}')))),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -670,7 +679,9 @@ class _MapaScreenState extends State<MapaScreen> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('🏘️ Aldea: ${a.nombre}'))),
+                        SnackBar(
+                            content: Text(tr('🏘️ Aldea: ${a.nombre}',
+                                '🏘️ Village: ${a.nombre}')))),
                     child: const Icon(Icons.holiday_village,
                         color: Colors.purple, size: 24),
                   ),

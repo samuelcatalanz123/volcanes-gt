@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'idioma.dart';
 
 /// Un paso de la ruta: dónde es la maniobra y qué hay que hacer.
 class PasoRuta {
@@ -78,54 +79,60 @@ Future<Ruta?> obtenerRuta(LatLng origen, LatLng destino) async {
 
 /// Convierte la maniobra de OSRM (en inglés) a una instrucción en español.
 String _instruccion(String tipo, String? mod, String calle) {
-  final porCalle = calle.toString().isNotEmpty ? ' por $calle' : '';
+  final porCalle =
+      calle.toString().isNotEmpty ? tr(' por $calle', ' on $calle') : '';
   switch (tipo) {
     case 'depart':
-      return 'Empieza el viaje$porCalle';
+      return tr('Empieza el viaje$porCalle', 'Start the trip$porCalle');
     case 'arrive':
-      return '¡Has llegado a tu destino!';
+      return tr('¡Has llegado a tu destino!', 'You have arrived!');
     case 'turn':
-      return 'Gira ${_lado(mod)}$porCalle';
+      return tr('Gira ${_lado(mod)}$porCalle', 'Turn ${_lado(mod)}$porCalle');
     case 'end of road':
-      return 'Al final de la calle, gira ${_lado(mod)}$porCalle';
+      return tr('Al final de la calle, gira ${_lado(mod)}$porCalle',
+          'At the end of the road, turn ${_lado(mod)}$porCalle');
     case 'new name':
     case 'continue':
-      return 'Sigue derecho$porCalle';
+      return tr('Sigue derecho$porCalle', 'Continue straight$porCalle');
     case 'merge':
-      return 'Incorpórate ${_lado(mod)}$porCalle';
+      return tr(
+          'Incorpórate ${_lado(mod)}$porCalle', 'Merge ${_lado(mod)}$porCalle');
     case 'on ramp':
-      return 'Toma la rampa ${_lado(mod)}';
+      return tr('Toma la rampa ${_lado(mod)}', 'Take the ramp ${_lado(mod)}');
     case 'off ramp':
-      return 'Toma la salida ${_lado(mod)}';
+      return tr('Toma la salida ${_lado(mod)}', 'Take the exit ${_lado(mod)}');
     case 'fork':
-      return 'En la bifurcación, mantente ${_lado(mod)}';
+      return tr('En la bifurcación, mantente ${_lado(mod)}',
+          'At the fork, keep ${_lado(mod)}');
     case 'roundabout':
     case 'rotary':
-      return 'Entra a la rotonda$porCalle';
+      return tr('Entra a la rotonda$porCalle', 'Enter the roundabout$porCalle');
     default:
-      return calle.toString().isNotEmpty ? 'Sigue$porCalle' : 'Sigue derecho';
+      return calle.toString().isNotEmpty
+          ? tr('Sigue$porCalle', 'Continue$porCalle')
+          : tr('Sigue derecho', 'Continue straight');
   }
 }
 
-/// Traduce el lado de la maniobra (left/right…) a español.
+/// El lado de la maniobra (left/right…) en el idioma elegido.
 String _lado(String? mod) {
   switch (mod) {
     case 'left':
-      return 'a la izquierda';
+      return tr('a la izquierda', 'left');
     case 'right':
-      return 'a la derecha';
+      return tr('a la derecha', 'right');
     case 'slight left':
-      return 'ligeramente a la izquierda';
+      return tr('ligeramente a la izquierda', 'slightly left');
     case 'slight right':
-      return 'ligeramente a la derecha';
+      return tr('ligeramente a la derecha', 'slightly right');
     case 'sharp left':
-      return 'cerrado a la izquierda';
+      return tr('cerrado a la izquierda', 'sharp left');
     case 'sharp right':
-      return 'cerrado a la derecha';
+      return tr('cerrado a la derecha', 'sharp right');
     case 'uturn':
-      return 'en U';
+      return tr('en U', 'a U-turn');
     case 'straight':
-      return 'derecho';
+      return tr('derecho', 'straight');
     default:
       return '';
   }

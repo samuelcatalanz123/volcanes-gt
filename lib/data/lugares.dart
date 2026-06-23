@@ -24,6 +24,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.lago,
     departamento: 'Izabal',
     descripcion: 'El lago más grande de Guatemala; cerca del Río Dulce.',
+    descripcionEn: 'Guatemala\'s largest lake; near the Río Dulce.',
     comida: 'Tapado (sopa de mariscos con coco) y pescado del Caribe.',
     dato: 'Es el lago más grande del país; lo vigila el Castillo de San Felipe.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Beach_in_Izabal%2C_Guatemala.jpg/500px-Beach_in_Izabal%2C_Guatemala.jpg',
@@ -35,6 +36,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.lago,
     departamento: 'Petén',
     descripcion: 'Gran lago del norte; cerca de la isla de Flores y Tikal.',
+    descripcionEn: 'A large northern lake; near the island of Flores and Tikal.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Petencito%2C_Zoo%2C_Lago_Pet%C3%A9n_Itza%2C_Guatemala_-_panoramio.jpg/330px-Petencito%2C_Zoo%2C_Lago_Pet%C3%A9n_Itza%2C_Guatemala_-_panoramio.jpg',
   ),
   Lugar(
@@ -44,6 +46,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.lago,
     departamento: 'Guatemala',
     descripcion: 'Lago cercano a la capital, al pie del volcán de Pacaya.',
+    descripcionEn: 'A lake near the capital, at the foot of Pacaya volcano.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Lago_de_Amatitl%C3%A1n_-_51367165519.jpg/330px-Lago_de_Amatitl%C3%A1n_-_51367165519.jpg',
   ),
 
@@ -55,6 +58,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.playa,
     departamento: 'Santa Rosa',
     descripcion: 'Playa de arena negra; famosa por las tortugas marinas.',
+    descripcionEn: 'Black-sand beach; famous for its sea turtles.',
     mejorEpoca: 'Todo el año; de julio a diciembre liberan tortuguitas.',
     comida: 'Pescado frito, camarón y coco fresco a la orilla.',
     dato: 'Su arena es negra por el origen volcánico, y tiene un tortugario.',
@@ -67,6 +71,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.playa,
     departamento: 'Retalhuleu',
     descripcion: 'Playa del Pacífico con muelle histórico.',
+    descripcionEn: 'Pacific beach with a historic pier.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Champerico_Retalhuleu%2C_Guatemala.jpg/330px-Champerico_Retalhuleu%2C_Guatemala.jpg',
   ),
   Lugar(
@@ -76,6 +81,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.playa,
     departamento: 'Santa Rosa',
     descripcion: 'Playa tranquila del Pacífico, cerca de la frontera.',
+    descripcionEn: 'A quiet Pacific beach, near the border.',
   ),
   Lugar(
     nombre: 'Playa Blanca',
@@ -84,6 +90,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.playa,
     departamento: 'Izabal',
     descripcion: 'Playa de arena blanca en el Caribe guatemalteco.',
+    descripcionEn: 'White-sand beach on Guatemala\'s Caribbean coast.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/The_ocean_through_an_empty_glass_bottle_-_Playa_Blanca_Izabal.jpg/500px-The_ocean_through_an_empty_glass_bottle_-_Playa_Blanca_Izabal.jpg',
   ),
 
@@ -95,6 +102,7 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.montana,
     departamento: 'Huehuetenango',
     descripcion: 'La sierra no volcánica más alta de Centroamérica.',
+    descripcionEn: 'The highest non-volcanic range in Central America.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Sierra_de_los_Cuchumatanes01.jpg/330px-Sierra_de_los_Cuchumatanes01.jpg',
   ),
   Lugar(
@@ -104,6 +112,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.montana,
     departamento: 'Zacapa / Alta Verapaz',
     descripcion: 'Reserva de biosfera con bosque nuboso y mucha fauna.',
+    descripcionEn:
+        'A biosphere reserve with cloud forest and abundant wildlife.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/El_Toro_and_La_Mina_peaks_from_Las_Piedras_%282025%29.jpg/500px-El_Toro_and_La_Mina_peaks_from_Las_Piedras_%282025%29.jpg',
   ),
 
@@ -115,6 +125,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Santa Rosa',
     descripcion: 'Pueblo de cultura xinca cerca de la costa del Pacífico, con su iglesia colonial. ¡El pueblo natal del creador de esta app! 🇬🇹',
+    descripcionEn:
+        'A Xinca town near the Pacific coast, with its colonial church. The hometown of this app\'s creator! 🇬🇹',
     foto: null,
   ),
   Lugar(
@@ -151,6 +163,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Alta Verapaz',
     descripcion: 'Tierra del café y las orquídeas; cerca de Semuc Champey y las grutas de Lanquín.',
+    descripcionEn:
+        'Land of coffee and orchids; near Semuc Champey and the Lanquín caves.',
     mejorEpoca: 'Casi siempre fresco y lluvioso (clima de bosque nuboso).',
     comida: 'Kak\'ik, el caldo de chunto, emblema de Alta Verapaz.',
     dato: 'Aquí crece la Monja Blanca, la flor nacional de Guatemala.',
@@ -163,6 +177,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Escuintla',
     descripcion: 'Cabecera departamental, ciudad cálida cerca de la costa del Pacífico. Paso obligado hacia las playas del Pacífico y al pie del volcán de Pacaya.',
+    descripcionEn:
+        'Departmental capital, a warm city near the Pacific coast. A gateway to the Pacific beaches and at the foot of Pacaya volcano.',
     foto: 'assets/fotos/garita-escuintla.jpg',
   ),
 
@@ -287,6 +303,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Petén',
     descripcion: 'Ciudad maya junto a una laguna, con templos perfectos para ver el atardecer sobre la selva del Petén.',
+    descripcionEn:
+        'A Maya city beside a lagoon, with temples perfect for watching the sunset over the Petén jungle.',
     entrada: 'Sí, cobro de ingreso al parque.',
     dato: 'Aquí se grabó el reality "Survivor: Guatemala".',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Yaxha_von_oben.jpg/500px-Yaxha_von_oben.jpg',
@@ -298,6 +316,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Petén',
     descripcion: 'Ciudad maya remota en la selva, hogar de La Danta, una de las pirámides más grandes del mundo. Se llega caminando varios días o en helicóptero.',
+    descripcionEn:
+        'A remote Maya city in the jungle, home to La Danta, one of the largest pyramids in the world. Reached by a multi-day hike or by helicopter.',
     mejorEpoca: 'Seca (nov–abr); la caminata dura varios días.',
     dato: 'La Danta es una de las pirámides más voluminosas del planeta.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flickr_-_archer10_%28Dennis%29_-_Guatemala_1828_-_La_Danta_at_the_Mayan_site_of_El_Mirador.jpg/500px-Flickr_-_archer10_%28Dennis%29_-_Guatemala_1828_-_La_Danta_at_the_Mayan_site_of_El_Mirador.jpg',
