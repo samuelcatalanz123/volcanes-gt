@@ -10,6 +10,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.lago,
     departamento: 'Sololá',
     descripcion: 'Lago rodeado de volcanes, uno de los más bellos del mundo.',
+    descripcionEn:
+        'A lake ringed by volcanoes, one of the most beautiful in the world.',
     mejorEpoca: 'Noviembre a abril (época seca, cielos despejados).',
     comida: 'Pescado del lago y cocina kaqchikel en los pueblos de la orilla.',
     dato: 'Aldous Huxley lo llamó "el lago más hermoso del mundo".',
@@ -122,6 +124,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Sacatepéquez',
     descripcion: 'Ciudad colonial Patrimonio de la Humanidad. Famosa por el Arco de Santa Catalina, sus iglesias y el empedrado. Rodeada por los volcanes de Agua, Fuego y Acatenango.',
+    descripcionEn:
+        'Colonial city and World Heritage Site, famous for the Santa Catalina Arch, its churches and cobblestone streets. Ringed by the Agua, Fuego and Acatenango volcanoes.',
     mejorEpoca: 'Seca (nov–abr); Semana Santa por sus famosas alfombras.',
     comida: 'Pepián, plátanos en mole y dulces típicos.',
     dato: 'Fue la capital del Reino de Guatemala hasta los terremotos de 1773.',
@@ -134,6 +138,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Petén',
     descripcion: 'Isla colorida en el lago Petén Itzá; puerta de entrada a las ruinas mayas de Tikal.',
+    descripcionEn:
+        'Colorful island on Lake Petén Itzá; the gateway to the Maya ruins of Tikal.',
     comida: 'Cocina petenera; pescado blanco del lago Petén Itzá.',
     dato: 'Fue la última ciudad maya independiente; cayó hasta 1697.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Flores_Island.jpg',
@@ -168,6 +174,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Petén',
     descripcion: 'Ciudad maya monumental en la selva del Petén, Patrimonio de la Humanidad. Sus templos-pirámide se alzan sobre el bosque tropical.',
+    descripcionEn:
+        'Monumental Maya city in the Petén jungle, a World Heritage Site. Its pyramid-temples rise above the rainforest.',
     mejorEpoca: 'Seca (nov–abr); muy temprano para ver fauna y el amanecer.',
     entrada: 'Sí: es parque nacional, con tarifa para nacionales y extranjeros.',
     comida: 'Cocina petenera (pavo, caldos); restaurantes cerca, en Flores.',
@@ -186,6 +194,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Alta Verapaz',
     descripcion: 'Pozas de agua turquesa sobre un puente natural de roca caliza, en plena selva del río Cahabón. Una de las maravillas naturales del país.',
+    descripcionEn:
+        'Turquoise pools over a natural limestone bridge, deep in the jungle of the Cahabón River. One of the country\'s natural wonders.',
     mejorEpoca: 'Seca (nov–abr); en lluvias el agua baja turbia.',
     entrada: 'Sí, cobro de ingreso al parque natural.',
     comida: 'Kak\'ik (caldo de chunto), platillo típico de Alta Verapaz.',
@@ -204,6 +214,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Quiché',
     descripcion: 'Pueblo k\'iche\' famoso por su colorido mercado (jueves y domingo) y la iglesia de Santo Tomás.',
+    descripcionEn:
+        'K\'iche\' town famous for its colorful market (Thursdays and Sundays) and the church of Santo Tomás.',
     mejorEpoca: 'Jueves y domingo, los días de mercado.',
     comida: 'Caldos k\'iche\' y atol de elote.',
     dato: 'En la iglesia de Santo Tomás se mezclan ritos católicos y mayas.',
@@ -221,6 +233,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Izabal',
     descripcion: 'Río de aguas verdes entre cañones de selva que une el lago de Izabal con el Caribe. Famoso por sus paseos en lancha hasta Lívingston.',
+    descripcionEn:
+        'A green-water river through jungle canyons linking Lake Izabal to the Caribbean. Famous for boat trips to Lívingston.',
     mejorEpoca: 'Todo el año; ideal para paseos en lancha.',
     comida: 'Tapado garífuna y pescado fresco.',
     dato: 'Su cañón de selva guarda el antiguo Castillo de San Felipe de Lara.',
@@ -233,6 +247,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.sitio,
     departamento: 'Izabal',
     descripcion: 'Sitio arqueológico maya famoso por sus enormes estelas y zoomorfos de piedra tallada. Patrimonio de la Humanidad.',
+    descripcionEn:
+        'Maya archaeological site famous for its huge carved-stone stelae and zoomorphs. A World Heritage Site.',
     entrada: 'Sí, cobro de ingreso al parque arqueológico.',
     comida: 'Cocina de Izabal: tapado, yuca y pescado.',
     dato: 'Tiene la estela más alta del mundo maya: la Estela E, de casi 8 metros.',
@@ -245,6 +261,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Sololá',
     descripcion: 'Puerta de entrada al lago de Atitlán. Su Calle Santander está llena de artesanías, y desde la orilla se ven los tres volcanes del lago.',
+    descripcionEn:
+        'Gateway to Lake Atitlán. Its Calle Santander is full of crafts, and from the shore you can see the lake\'s three volcanoes.',
     comida: 'Pescado del lago y cocina internacional en la Calle Santander.',
     dato: 'Le dicen "Pana"; de aquí salen las lanchas a los pueblos del lago.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Panajachel_lake_atitlan_2009r.JPG/500px-Panajachel_lake_atitlan_2009r.JPG',
@@ -256,6 +274,8 @@ const List<Lugar> lugares = [
     tipo: TipoLugar.ciudad,
     departamento: 'Izabal',
     descripcion: 'Pueblo caribeño garífuna al que solo se llega por lancha. Cultura afrodescendiente, el platillo tapado y las playas del Atlántico.',
+    descripcionEn:
+        'Garífuna Caribbean town reachable only by boat. Afro-descendant culture, the tapado dish and Atlantic beaches.',
     comida: 'Tapado, pan de coco y "rice and beans" garífunas.',
     dato: 'Solo se llega por lancha; es cuna de la cultura garífuna y la música punta.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Livingston%2C_Izabal_-_Guatemala.jpg/500px-Livingston%2C_Izabal_-_Guatemala.jpg',

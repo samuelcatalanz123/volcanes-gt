@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/idioma.dart';
 
 /// Muestra los datos extra de un lugar o volcán —mejor época, entrada, comida
 /// típica y un dato curioso— pero SOLO las filas que no son null. Si no hay
@@ -20,10 +21,12 @@ class DatosExtra extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final filas = <Widget>[
-      if (mejorEpoca != null) _fila('📅', 'Mejor época', mejorEpoca!),
-      if (entrada != null) _fila('🎟️', 'Entrada', entrada!),
-      if (comida != null) _fila('🍲', 'Comida típica', comida!),
-      if (dato != null) _fila('💡', '¿Sabías que…?', dato!),
+      if (mejorEpoca != null)
+        _fila('📅', tr('Mejor época', 'Best time'), mejorEpoca!),
+      if (entrada != null) _fila('🎟️', tr('Entrada', 'Entrance'), entrada!),
+      if (comida != null)
+        _fila('🍲', tr('Comida típica', 'Typical food'), comida!),
+      if (dato != null) _fila('💡', tr('¿Sabías que…?', 'Did you know…?'), dato!),
     ];
     if (filas.isEmpty) return const SizedBox.shrink();
     return Column(

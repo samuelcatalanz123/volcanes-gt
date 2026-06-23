@@ -9,6 +9,7 @@ class Volcan {
   final String departamento;
   final bool activo;
   final String consejo;
+  final String? consejoEn; // consejo en inglés (opcional)
   final String? foto; // URL de una foto (de Wikipedia); puede ser null
   // Datos extra opcionales (se muestran solo si no son null).
   final String? mejorEpoca; // 📅 mejor época para visitar
@@ -24,6 +25,7 @@ class Volcan {
     required this.departamento,
     required this.activo,
     required this.consejo,
+    this.consejoEn,
     this.foto,
     this.mejorEpoca,
     this.entrada,

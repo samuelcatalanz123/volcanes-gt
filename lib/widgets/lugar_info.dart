@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/lugar.dart';
 import '../screens/navegacion_screen.dart';
 import '../services/favoritos.dart';
+import '../services/idioma.dart';
 import 'datos_extra.dart';
 import 'foto_lugar.dart';
 
@@ -42,15 +43,15 @@ Color colorDe(TipoLugar tipo) {
 String nombreTipo(TipoLugar tipo) {
   switch (tipo) {
     case TipoLugar.lago:
-      return 'Lagos';
+      return tr('Lagos', 'Lakes');
     case TipoLugar.playa:
-      return 'Playas';
+      return tr('Playas', 'Beaches');
     case TipoLugar.montana:
-      return 'Montañas';
+      return tr('Montañas', 'Mountains');
     case TipoLugar.ciudad:
-      return 'Ciudades';
+      return tr('Ciudades', 'Cities');
     case TipoLugar.sitio:
-      return 'Sitios';
+      return tr('Sitios', 'Sites');
   }
 }
 
@@ -69,8 +70,9 @@ Future<void> _comoLlegar(Lugar l) async {
 Future<void> _compartir(Lugar l) async {
   final ubic =
       'https://www.google.com/maps/search/?api=1&query=${l.lat},${l.lng}';
-  final texto = Uri.encodeComponent(
-      '¡Visita ${l.nombre} en Guatemala! 🌋\n$ubic\n\nCompartido desde Volcanes GT');
+  final texto = Uri.encodeComponent(tr(
+      '¡Visita ${l.nombre} en Guatemala! 🌋\n$ubic\n\nCompartido desde Volcanes GT',
+      'Visit ${l.nombre} in Guatemala! 🌋\n$ubic\n\nShared from Volcanes GT'));
   await launchUrl(Uri.parse('https://wa.me/?text=$texto'),
       mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
 }
@@ -112,7 +114,10 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
             Text(l.departamento),
           ]),
           const SizedBox(height: 12),
-          Text(l.descripcion, style: const TextStyle(height: 1.4)),
+          Text(
+            Idioma.esIngles ? (l.descripcionEn ?? l.descripcion) : l.descripcion,
+            style: const TextStyle(height: 1.4),
+          ),
           DatosExtra(
             mejorEpoca: l.mejorEpoca,
             entrada: l.entrada,
@@ -135,7 +140,7 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
                 );
               },
               icon: const Icon(Icons.navigation),
-              label: const Text('Navegar con voz 🗣️'),
+              label: Text(tr('Navegar con voz 🗣️', 'Navigate with voice 🗣️')),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
@@ -147,7 +152,7 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
             child: OutlinedButton.icon(
               onPressed: () => _comoLlegar(l),
               icon: const Icon(Icons.map),
-              label: const Text('Abrir en Google Maps'),
+              label: Text(tr('Abrir en Google Maps', 'Open in Google Maps')),
             ),
           ),
           const SizedBox(height: 8),
@@ -157,7 +162,7 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
             child: OutlinedButton.icon(
               onPressed: () => _compartir(l),
               icon: const Icon(Icons.share),
-              label: const Text('Compartir 📲'),
+              label: Text(tr('Compartir 📲', 'Share 📲')),
             ),
           ),
         ],

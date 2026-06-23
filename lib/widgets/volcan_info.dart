@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/volcan.dart';
 import '../screens/navegacion_screen.dart';
 import '../services/favoritos.dart';
+import '../services/idioma.dart';
 import 'datos_extra.dart';
 import 'foto_lugar.dart';
 import 'clima_vista.dart';
@@ -23,8 +24,9 @@ Future<void> _comoLlegar(Volcan v) async {
 Future<void> _compartir(Volcan v) async {
   final ubic =
       'https://www.google.com/maps/search/?api=1&query=${v.lat},${v.lng}';
-  final texto = Uri.encodeComponent(
-      '¡Visita ${v.nombre} en Guatemala! 🌋\n$ubic\n\nCompartido desde Volcanes GT');
+  final texto = Uri.encodeComponent(tr(
+      '¡Visita ${v.nombre} en Guatemala! 🌋\n$ubic\n\nCompartido desde Volcanes GT',
+      'Visit ${v.nombre} in Guatemala! 🌋\n$ubic\n\nShared from Volcanes GT'));
   await launchUrl(Uri.parse('https://wa.me/?text=$texto'),
       mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
 }
@@ -36,7 +38,8 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
   String? distanciaTexto;
   if (desde != null) {
     final metros = const Distance().as(LengthUnit.Meter, desde, v.punto);
-    distanciaTexto = 'A ${(metros / 1000).toStringAsFixed(1)} km de ti';
+    final km = (metros / 1000).toStringAsFixed(1);
+    distanciaTexto = tr('A $km km de ti', '$km km from you');
   }
 
   final ctxRaiz = context; // para abrir la pantalla de navegación
@@ -73,7 +76,9 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
             Icon(v.activo ? Icons.local_fire_department : Icons.check_circle,
                 size: 18, color: v.activo ? Colors.red : Colors.green),
             const SizedBox(width: 6),
-            Text(v.activo ? 'Volcán ACTIVO' : 'Inactivo'),
+            Text(v.activo
+                ? tr('Volcán ACTIVO', 'ACTIVE volcano')
+                : tr('Inactivo', 'Inactive')),
           ]),
           if (distanciaTexto != null) ...[
             const SizedBox(height: 6),
@@ -87,7 +92,10 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
           const SizedBox(height: 6),
           ClimaVista(lat: v.lat, lng: v.lng),
           const SizedBox(height: 12),
-          Text(v.consejo, style: const TextStyle(height: 1.4)),
+          Text(
+            Idioma.esIngles ? (v.consejoEn ?? v.consejo) : v.consejo,
+            style: const TextStyle(height: 1.4),
+          ),
           DatosExtra(
             mejorEpoca: v.mejorEpoca,
             entrada: v.entrada,
@@ -110,7 +118,7 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
                 );
               },
               icon: const Icon(Icons.navigation),
-              label: const Text('Navegar con voz 🗣️'),
+              label: Text(tr('Navegar con voz 🗣️', 'Navigate with voice 🗣️')),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
@@ -123,7 +131,7 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
             child: OutlinedButton.icon(
               onPressed: () => _comoLlegar(v),
               icon: const Icon(Icons.map),
-              label: const Text('Abrir en Google Maps'),
+              label: Text(tr('Abrir en Google Maps', 'Open in Google Maps')),
             ),
           ),
           const SizedBox(height: 8),
@@ -133,7 +141,7 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
             child: OutlinedButton.icon(
               onPressed: () => _compartir(v),
               icon: const Icon(Icons.share),
-              label: const Text('Compartir 📲'),
+              label: Text(tr('Compartir 📲', 'Share 📲')),
             ),
           ),
         ],

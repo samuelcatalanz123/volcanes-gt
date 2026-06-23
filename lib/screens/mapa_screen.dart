@@ -12,6 +12,7 @@ import '../services/gasolineras.dart';
 import '../services/busqueda.dart';
 import '../services/favoritos.dart';
 import '../services/tema.dart';
+import '../services/idioma.dart';
 import '../widgets/volcan_info.dart';
 import '../widgets/lugar_info.dart';
 import '../widgets/foto_lugar.dart';
@@ -124,12 +125,13 @@ class _MapaScreenState extends State<MapaScreen> {
   // Muestra una hoja con los teléfonos de emergencia de Guatemala. Al tocar
   // uno, marca el número.
   void _mostrarEmergencias() {
-    const numeros = <(String, String, String)>[
-      ('🚓', 'Policía (PNC)', '110'),
-      ('🚒', 'Bomberos Voluntarios', '122'),
-      ('🚑', 'Bomberos Municipales', '123'),
-      ('🧳', 'Asistencia al turista (Asistur)', '1500'),
-      ('🌋', 'Desastres (Conred)', '119'),
+    final numeros = <(String, String, String)>[
+      ('🚓', tr('Policía (PNC)', 'Police (PNC)'), '110'),
+      ('🚒', tr('Bomberos Voluntarios', 'Volunteer Firefighters'), '122'),
+      ('🚑', tr('Bomberos Municipales', 'Municipal Firefighters'), '123'),
+      ('🧳', tr('Asistencia al turista (Asistur)', 'Tourist help (Asistur)'),
+          '1500'),
+      ('🌋', tr('Desastres (Conred)', 'Disasters (Conred)'), '119'),
     ];
     showModalBottomSheet(
       context: context,
@@ -138,14 +140,15 @@ class _MapaScreenState extends State<MapaScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 8),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
               child: Row(children: [
-                Icon(Icons.sos, color: Colors.red),
-                SizedBox(width: 8),
+                const Icon(Icons.sos, color: Colors.red),
+                const SizedBox(width: 8),
                 Expanded(
-                  child: Text('Teléfonos de emergencia',
-                      style: TextStyle(
+                  child: Text(
+                      tr('Teléfonos de emergencia', 'Emergency numbers'),
+                      style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
               ]),
@@ -294,10 +297,11 @@ class _MapaScreenState extends State<MapaScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                     child: TextField(
                       autofocus: false,
-                      decoration: const InputDecoration(
-                        labelText: 'Buscar volcán, ciudad, lago o playa',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: tr('Buscar volcán, ciudad, lago o playa',
+                            'Search volcano, city, lake or beach'),
+                        prefixIcon: const Icon(Icons.search),
+                        border: const OutlineInputBorder(),
                       ),
                       onChanged: (texto) =>
                           setSheetState(() => busqueda = texto),
@@ -310,7 +314,7 @@ class _MapaScreenState extends State<MapaScreen> {
                       children: [
                         FilterChip(
                           avatar: const Text('⭐'),
-                          label: const Text('Favoritos'),
+                          label: Text(tr('Favoritos', 'Favorites')),
                           selected: soloFavoritos,
                           onSelected: (v) =>
                               setSheetState(() => soloFavoritos = v),
@@ -319,7 +323,7 @@ class _MapaScreenState extends State<MapaScreen> {
                         if (_yo != null)
                           FilterChip(
                             avatar: const Text('📍'),
-                            label: const Text('Cerca de mí'),
+                            label: Text(tr('Cerca de mí', 'Near me')),
                             selected: cercaDeMi,
                             onSelected: (v) =>
                                 setSheetState(() => cercaDeMi = v),
@@ -332,8 +336,10 @@ class _MapaScreenState extends State<MapaScreen> {
                         ? Padding(
                             padding: const EdgeInsets.all(24),
                             child: Text(soloFavoritos
-                                ? 'Aún no tienes favoritos. Toca la ⭐ en un lugar para guardarlo.'
-                                : 'No se encontró nada con ese nombre.'),
+                                ? tr('Aún no tienes favoritos. Toca la ⭐ en un lugar para guardarlo.',
+                                    'No favorites yet. Tap the ⭐ on a place to save it.')
+                                : tr('No se encontró nada con ese nombre.',
+                                    'Nothing found with that name.')),
                           )
                         : ListView(
                             shrinkWrap: true,
@@ -424,15 +430,15 @@ class _MapaScreenState extends State<MapaScreen> {
   String _tipoSingular(TipoLugar tipo) {
     switch (tipo) {
       case TipoLugar.lago:
-        return 'Lago';
+        return tr('Lago', 'Lake');
       case TipoLugar.playa:
-        return 'Playa';
+        return tr('Playa', 'Beach');
       case TipoLugar.montana:
-        return 'Montaña';
+        return tr('Montaña', 'Mountain');
       case TipoLugar.ciudad:
-        return 'Ciudad';
+        return tr('Ciudad', 'City');
       case TipoLugar.sitio:
-        return 'Sitio';
+        return tr('Sitio', 'Site');
     }
   }
 
@@ -440,26 +446,35 @@ class _MapaScreenState extends State<MapaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('🌋 ${volcanes.length} Volcanes de Guatemala'),
+        title: Text(tr('🌋 ${volcanes.length} Volcanes de Guatemala',
+            '🌋 ${volcanes.length} Volcanoes of Guatemala')),
         actions: [
           IconButton(
             icon: const Icon(Icons.sos, color: Colors.red),
-            tooltip: 'Emergencias',
+            tooltip: tr('Emergencias', 'Emergencies'),
             onPressed: _mostrarEmergencias,
           ),
           IconButton(
             icon: Icon(Tema.esOscuro ? Icons.light_mode : Icons.dark_mode),
-            tooltip: Tema.esOscuro ? 'Modo claro' : 'Modo oscuro',
+            tooltip: Tema.esOscuro
+                ? tr('Modo claro', 'Light mode')
+                : tr('Modo oscuro', 'Dark mode'),
             onPressed: () => Tema.alternar(),
+          ),
+          // Botón de idioma: muestra el idioma al que cambiará.
+          TextButton(
+            onPressed: () => Idioma.alternar(),
+            child: Text(Idioma.esIngles ? 'ES' : 'EN',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           IconButton(
             icon: const Icon(Icons.list),
-            tooltip: 'Buscar y lista',
+            tooltip: tr('Buscar y lista', 'Search & list'),
             onPressed: _mostrarLista,
           ),
           IconButton(
             icon: const Icon(Icons.info_outline),
-            tooltip: 'Acerca de',
+            tooltip: tr('Acerca de', 'About'),
             onPressed: _mostrarAcercaDe,
           ),
         ],
@@ -700,7 +715,7 @@ class _MapaScreenState extends State<MapaScreen> {
                   FilterChip(
                     avatar: const Icon(Icons.local_fire_department,
                         color: Colors.red, size: 18),
-                    label: const Text('Volcanes'),
+                    label: Text(tr('Volcanes', 'Volcanoes')),
                     selected: _verVolcanes,
                     onSelected: (v) => setState(() => _verVolcanes = v),
                   ),
@@ -724,7 +739,7 @@ class _MapaScreenState extends State<MapaScreen> {
                   FilterChip(
                     avatar: const Icon(Icons.location_city,
                         color: Colors.indigo, size: 18),
-                    label: const Text('Departamentos'),
+                    label: Text(tr('Departamentos', 'Departments')),
                     selected: _verDepartamentos,
                     onSelected: (v) =>
                         setState(() => _verDepartamentos = v),
@@ -743,7 +758,7 @@ class _MapaScreenState extends State<MapaScreen> {
             heroTag: 'rios',
             backgroundColor: Colors.blue,
             onPressed: _cargandoRios ? null : _buscarRios,
-            tooltip: 'Buscar ríos aquí',
+            tooltip: tr('Buscar ríos aquí', 'Find rivers here'),
             child: _cargandoRios
                 ? const SizedBox(
                     width: 22,
@@ -759,7 +774,7 @@ class _MapaScreenState extends State<MapaScreen> {
             heroTag: 'aldeas',
             backgroundColor: Colors.purple,
             onPressed: _cargandoAldeas ? null : _buscarAldeas,
-            tooltip: 'Buscar aldeas aquí',
+            tooltip: tr('Buscar aldeas aquí', 'Find villages here'),
             child: _cargandoAldeas
                 ? const SizedBox(
                     width: 22,
@@ -775,7 +790,7 @@ class _MapaScreenState extends State<MapaScreen> {
             heroTag: 'gaso',
             backgroundColor: Colors.green,
             onPressed: _cargandoGaso ? null : _buscarGasolineras,
-            tooltip: 'Buscar gasolineras aquí',
+            tooltip: tr('Buscar gasolineras aquí', 'Find gas stations here'),
             child: _cargandoGaso
                 ? const SizedBox(
                     width: 22,
@@ -790,7 +805,7 @@ class _MapaScreenState extends State<MapaScreen> {
           FloatingActionButton(
             heroTag: 'todo',
             onPressed: _verTodoGuatemala,
-            tooltip: 'Ver todo Guatemala',
+            tooltip: tr('Ver todo Guatemala', 'See all Guatemala'),
             child: const Icon(Icons.public),
           ),
           const SizedBox(height: 12),
@@ -804,7 +819,7 @@ class _MapaScreenState extends State<MapaScreen> {
                 _ubicar();
               }
             },
-            tooltip: 'Centrar en mí',
+            tooltip: tr('Centrar en mí', 'Center on me'),
             child: const Icon(Icons.my_location),
           ),
         ],
@@ -825,26 +840,29 @@ class _Leyenda extends StatelessWidget {
         color: Colors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(mainAxisSize: MainAxisSize.min, children: [
-            Icon(Icons.local_fire_department, color: Colors.red, size: 18),
-            SizedBox(width: 4),
-            Text('Activo', style: TextStyle(fontSize: 12)),
+            const Icon(Icons.local_fire_department, color: Colors.red, size: 18),
+            const SizedBox(width: 4),
+            Text(tr('Activo', 'Active'),
+                style: const TextStyle(fontSize: 12, color: Colors.black)),
           ]),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Row(mainAxisSize: MainAxisSize.min, children: [
-            Icon(Icons.terrain, color: Colors.deepOrange, size: 18),
-            SizedBox(width: 4),
-            Text('Apagado', style: TextStyle(fontSize: 12)),
+            const Icon(Icons.terrain, color: Colors.deepOrange, size: 18),
+            const SizedBox(width: 4),
+            Text(tr('Apagado', 'Dormant'),
+                style: const TextStyle(fontSize: 12, color: Colors.black)),
           ]),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Row(mainAxisSize: MainAxisSize.min, children: [
-            Icon(Icons.star, color: Colors.amber, size: 18),
-            SizedBox(width: 4),
-            Text('Más alto', style: TextStyle(fontSize: 12)),
+            const Icon(Icons.star, color: Colors.amber, size: 18),
+            const SizedBox(width: 4),
+            Text(tr('Más alto', 'Highest'),
+                style: const TextStyle(fontSize: 12, color: Colors.black)),
           ]),
         ],
       ),

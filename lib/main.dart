@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'screens/mapa_screen.dart';
 import 'services/favoritos.dart';
 import 'services/tema.dart';
+import 'services/idioma.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Favoritos.cargar(); // recupera los favoritos guardados
   await Tema.cargar(); // recupera el tema (claro/oscuro) guardado
+  await Idioma.cargar(); // recupera el idioma (español/inglés) guardado
   runApp(const VolcanesApp());
 }
 
@@ -15,10 +17,10 @@ class VolcanesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Se redibuja sola cuando el usuario cambia entre claro y oscuro.
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: Tema.modo,
-      builder: (context, modo, _) => MaterialApp(
+    // Se redibuja sola cuando cambia el tema (claro/oscuro) o el idioma.
+    return ListenableBuilder(
+      listenable: Listenable.merge([Tema.modo, Idioma.ingles]),
+      builder: (context, _) => MaterialApp(
         title: 'Volcanes GT',
         theme:
             ThemeData(colorSchemeSeed: Colors.deepOrange, useMaterial3: true),
@@ -26,7 +28,7 @@ class VolcanesApp extends StatelessWidget {
             colorSchemeSeed: Colors.deepOrange,
             brightness: Brightness.dark,
             useMaterial3: true),
-        themeMode: modo,
+        themeMode: Tema.modo.value,
         home: const MapaScreen(),
         debugShowCheckedModeBanner: false,
       ),

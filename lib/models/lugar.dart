@@ -11,6 +11,7 @@ class Lugar {
   final TipoLugar tipo;
   final String departamento;
   final String descripcion;
+  final String? descripcionEn; // descripción en inglés (opcional)
   final String? foto; // URL de una foto (de Wikipedia); puede ser null
   // Galería opcional: si tiene varias fotos, se muestran deslizables.
   final List<String>? fotos;
@@ -27,6 +28,7 @@ class Lugar {
     required this.tipo,
     required this.departamento,
     required this.descripcion,
+    this.descripcionEn,
     this.foto,
     this.fotos,
     this.mejorEpoca,
