@@ -15,6 +15,8 @@ IconData iconoDe(TipoLugar tipo) {
       return Icons.landscape;
     case TipoLugar.ciudad:
       return Icons.location_city;
+    case TipoLugar.sitio:
+      return Icons.castle;
   }
 }
 
@@ -29,6 +31,8 @@ Color colorDe(TipoLugar tipo) {
       return Colors.brown;
     case TipoLugar.ciudad:
       return Colors.purple;
+    case TipoLugar.sitio:
+      return Colors.teal;
   }
 }
 
@@ -43,6 +47,8 @@ String nombreTipo(TipoLugar tipo) {
       return 'Montañas';
     case TipoLugar.ciudad:
       return 'Ciudades';
+    case TipoLugar.sitio:
+      return 'Sitios';
   }
 }
 

@@ -330,6 +330,8 @@ class _MapaScreenState extends State<MapaScreen> {
         return 'Montaña';
       case TipoLugar.ciudad:
         return 'Ciudad';
+      case TipoLugar.sitio:
+        return 'Sitio';
     }
   }
 

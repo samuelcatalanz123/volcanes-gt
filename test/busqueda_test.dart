@@ -33,6 +33,14 @@ void main() {
     );
   });
 
+  test('los nuevos sitios famosos aparecen al buscarlos', () {
+    for (final nombre in ['Tikal', 'Semuc Champey', 'Quiriguá', 'Río Dulce']) {
+      final res = buscarTodo(nombre);
+      expect(res.any((r) => !r.esVolcan && r.nombre == nombre), true,
+          reason: 'Debe encontrarse el sitio "$nombre"');
+    }
+  });
+
   test('con búsqueda vacía devuelve TODO (volcanes + lugares)', () {
     final res = buscarTodo('');
     expect(res.any((r) => r.esVolcan), true);
