@@ -24,6 +24,15 @@ void main() {
         reason: 'Antigua está en Sacatepéquez');
   });
 
+  test('Escuintla aparece como ciudad (lugar), no solo como departamento', () {
+    final res = buscarTodo('Escuintla');
+    expect(
+      res.any((r) => !r.esVolcan && r.nombre == 'Escuintla'),
+      true,
+      reason: 'Debe existir el lugar (ciudad) llamado Escuintla',
+    );
+  });
+
   test('con búsqueda vacía devuelve TODO (volcanes + lugares)', () {
     final res = buscarTodo('');
     expect(res.any((r) => r.esVolcan), true);

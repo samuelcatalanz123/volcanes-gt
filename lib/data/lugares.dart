@@ -134,4 +134,13 @@ const List<Lugar> lugares = [
     descripcion: 'Tierra del café y las orquídeas; cerca de Semuc Champey y las grutas de Lanquín.',
     foto: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Collage_of_Coban.jpg',
   ),
+  Lugar(
+    nombre: 'Escuintla',
+    lat: 14.3050,
+    lng: -90.7850,
+    tipo: TipoLugar.ciudad,
+    departamento: 'Escuintla',
+    descripcion: 'Cabecera departamental, ciudad cálida cerca de la costa del Pacífico. Paso obligado hacia las playas del Pacífico y al pie del volcán de Pacaya.',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Escuintla%2C_Guatemala_-_panoramio_%2811%29.jpg/500px-Escuintla%2C_Guatemala_-_panoramio_%2811%29.jpg',
+  ),
 ];
