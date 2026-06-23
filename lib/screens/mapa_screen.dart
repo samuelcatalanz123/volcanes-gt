@@ -10,6 +10,7 @@ import '../models/lugar.dart';
 import '../services/ubicacion.dart';
 import '../services/gasolineras.dart';
 import '../services/busqueda.dart';
+import '../services/favoritos.dart';
 import '../widgets/volcan_info.dart';
 import '../widgets/lugar_info.dart';
 import '../widgets/foto_lugar.dart';
@@ -253,17 +254,33 @@ class _MapaScreenState extends State<MapaScreen> {
   // su ficha (desde donde se puede navegar con voz).
   void _mostrarLista() {
     String busqueda = ''; // lo que el usuario escribe en el buscador
+    bool soloFavoritos = false; // chip ⭐
+    bool cercaDeMi = false; // chip 📍 (ordena por distancia)
 
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
       isScrollControlled: true, // para que crezca con el teclado
       builder: (context) {
-        // StatefulBuilder permite que la hoja se redibuje al escribir.
+        // StatefulBuilder permite que la hoja se redibuje al escribir/filtrar.
         return StatefulBuilder(
           builder: (context, setSheetState) {
-            // Busca en volcanes Y lugares (por nombre o departamento).
-            final resultados = buscarTodo(busqueda);
+            // Distancia en km desde el usuario (o null si no hay ubicación).
+            double? distanciaKm(ResultadoBusqueda r) => _yo == null
+                ? null
+                : const Distance().as(LengthUnit.Meter, _yo!, r.punto) / 1000;
+
+            // Busca en volcanes Y lugares; luego aplica los filtros de chips.
+            var resultados = buscarTodo(busqueda);
+            if (soloFavoritos) {
+              resultados = resultados
+                  .where((r) => Favoritos.esFavorito(r.nombre))
+                  .toList();
+            }
+            if (cercaDeMi && _yo != null) {
+              resultados = [...resultados]
+                ..sort((a, b) => distanciaKm(a)!.compareTo(distanciaKm(b)!));
+            }
 
             return Padding(
               // Deja espacio cuando aparece el teclado.
@@ -285,17 +302,45 @@ class _MapaScreenState extends State<MapaScreen> {
                           setSheetState(() => busqueda = texto),
                     ),
                   ),
+                  // Filtros rápidos: solo favoritos / ordenar por cercanía.
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+                    child: Row(
+                      children: [
+                        FilterChip(
+                          avatar: const Text('⭐'),
+                          label: const Text('Favoritos'),
+                          selected: soloFavoritos,
+                          onSelected: (v) =>
+                              setSheetState(() => soloFavoritos = v),
+                        ),
+                        const SizedBox(width: 8),
+                        if (_yo != null)
+                          FilterChip(
+                            avatar: const Text('📍'),
+                            label: const Text('Cerca de mí'),
+                            selected: cercaDeMi,
+                            onSelected: (v) =>
+                                setSheetState(() => cercaDeMi = v),
+                          ),
+                      ],
+                    ),
+                  ),
                   Flexible(
                     child: resultados.isEmpty
-                        ? const Padding(
-                            padding: EdgeInsets.all(24),
-                            child: Text('No se encontró nada con ese nombre.'),
+                        ? Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Text(soloFavoritos
+                                ? 'Aún no tienes favoritos. Toca la ⭐ en un lugar para guardarlo.'
+                                : 'No se encontró nada con ese nombre.'),
                           )
                         : ListView(
                             shrinkWrap: true,
                             children: [
                               for (final r in resultados)
-                                _filaLista(context, r),
+                                _filaLista(context, r,
+                                    distanciaKm:
+                                        cercaDeMi ? distanciaKm(r) : null),
                             ],
                           ),
                   ),
@@ -310,7 +355,12 @@ class _MapaScreenState extends State<MapaScreen> {
 
   // Una fila de la lista: un volcán (con foto y altura) o un lugar turístico
   // (con su ícono de color). Al tocarla cierra la lista y abre la ficha.
-  Widget _filaLista(BuildContext context, ResultadoBusqueda r) {
+  Widget _filaLista(BuildContext context, ResultadoBusqueda r,
+      {double? distanciaKm}) {
+    // Si venimos de "Cerca de mí", agregamos la distancia al subtítulo.
+    final dist = distanciaKm == null
+        ? ''
+        : '  ·  ${distanciaKm.toStringAsFixed(distanciaKm < 10 ? 1 : 0)} km';
     if (r.esVolcan) {
       final v = r.volcan!;
       return ListTile(
@@ -334,7 +384,7 @@ class _MapaScreenState extends State<MapaScreen> {
                 color: v.activo ? Colors.red : Colors.deepOrange,
               ),
         title: Text(v.nombre),
-        subtitle: Text('${v.alturaM} m  ·  ${v.departamento}'),
+        subtitle: Text('${v.alturaM} m  ·  ${v.departamento}$dist'),
         trailing:
             v == _masAlto ? const Icon(Icons.star, color: Colors.amber) : null,
         onTap: () {
@@ -361,7 +411,7 @@ class _MapaScreenState extends State<MapaScreen> {
             )
           : Icon(iconoDe(l.tipo), color: colorDe(l.tipo)),
       title: Text(l.nombre),
-      subtitle: Text('${_tipoSingular(l.tipo)}  ·  ${l.departamento}'),
+      subtitle: Text('${_tipoSingular(l.tipo)}  ·  ${l.departamento}$dist'),
       onTap: () {
         Navigator.pop(context); // cierra la lista
         mostrarLugarInfo(context, l); // abre la ficha (con "Navegar con voz")

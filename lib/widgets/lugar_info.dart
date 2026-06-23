@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/lugar.dart';
 import '../screens/navegacion_screen.dart';
+import '../services/favoritos.dart';
 import 'foto_lugar.dart';
 
 /// El ícono que representa cada tipo de lugar.
@@ -98,6 +99,7 @@ void mostrarLugarInfo(BuildContext context, Lugar l) {
                   style: const TextStyle(
                       fontSize: 22, fontWeight: FontWeight.bold)),
             ),
+            BotonFavorito(nombre: l.nombre),
           ]),
           const SizedBox(height: 8),
           Row(children: [

@@ -1,3 +1,4 @@
+import 'package:latlong2/latlong.dart';
 import '../data/volcanes.dart';
 import '../data/lugares.dart';
 import '../models/volcan.dart';
@@ -16,6 +17,7 @@ class ResultadoBusqueda {
 
   String get nombre => volcan?.nombre ?? lugar!.nombre;
   String get departamento => volcan?.departamento ?? lugar!.departamento;
+  LatLng get punto => volcan?.punto ?? lugar!.punto;
 }
 
 /// Busca en TODO: los volcanes (ordenados del más alto al más bajo) y los

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'screens/mapa_screen.dart';
+import 'services/favoritos.dart';
 
-void main() => runApp(const VolcanesApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Favoritos.cargar(); // recupera los favoritos guardados
+  runApp(const VolcanesApp());
+}
 
 class VolcanesApp extends StatelessWidget {
   const VolcanesApp({super.key});

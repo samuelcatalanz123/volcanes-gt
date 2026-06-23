@@ -3,6 +3,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/volcan.dart';
 import '../screens/navegacion_screen.dart';
+import '../services/favoritos.dart';
 import 'foto_lugar.dart';
 import 'clima_vista.dart';
 
@@ -52,7 +53,14 @@ void mostrarVolcanInfo(BuildContext context, Volcan v, {LatLng? desde}) {
             FotoLugar(url: v.foto!),
             const SizedBox(height: 12),
           ],
-          Text(v.nombre, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          Row(children: [
+            Expanded(
+              child: Text(v.nombre,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold)),
+            ),
+            BotonFavorito(nombre: v.nombre),
+          ]),
           const SizedBox(height: 8),
           Row(children: [
             const Icon(Icons.terrain, size: 18),
