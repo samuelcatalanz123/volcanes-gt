@@ -34,6 +34,7 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
   String _estado = 'Calculando la ruta…';
   String _origenNombre = 'Tu ubicación';
   bool _cargando = true;
+  bool _vozLista = false; // ¿el usuario ya tocó 🔊 para activar la voz?
 
   // Puntos de partida fijos que el usuario puede elegir (además del GPS).
   static const Map<String, LatLng> _ciudades = {
@@ -120,6 +121,16 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
   Future<void> _hablar(String texto) async {
     await _tts.stop();
     await _tts.speak(texto);
+  }
+
+  // Lo llama el botón 🔊. Al ser un toque DIRECTO del dedo, "desbloquea" la voz
+  // en los navegadores del teléfono (que no dejan hablar sin un gesto del
+  // usuario). Después de este primer toque, los avisos automáticos ya suenan.
+  // OJO: sin await antes de speak, para no romper el gesto (iOS lo exige).
+  void _repetirVoz() {
+    setState(() => _vozLista = true);
+    _tts.stop();
+    _tts.speak(_estado);
   }
 
   @override
@@ -222,13 +233,36 @@ class _NavegacionScreenState extends State<NavegacionScreen> {
                         : const Icon(Icons.navigation, color: Colors.white, size: 30),
                     const SizedBox(width: 14),
                     Expanded(
-                      child: Text(
-                        _estado,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            _estado,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          // Pista que aparece hasta que tocas 🔊 la primera vez.
+                          if (!_cargando && !_vozLista)
+                            const Padding(
+                              padding: EdgeInsets.only(top: 4),
+                              child: Text(
+                                'Toca 🔊 para oír las indicaciones',
+                                style: TextStyle(
+                                    color: Colors.white70, fontSize: 12),
+                              ),
+                            ),
+                        ],
                       ),
+                    ),
+                    // Botón de voz: desbloquea y repite la instrucción actual.
+                    IconButton(
+                      onPressed: _cargando ? null : _repetirVoz,
+                      tooltip: 'Escuchar la instrucción',
+                      icon: const Icon(Icons.volume_up,
+                          color: Colors.white, size: 28),
                     ),
                   ],
                 ),

@@ -8,6 +8,7 @@ import '../data/frontera.dart';
 import '../models/lugar.dart';
 import '../services/ubicacion.dart';
 import '../services/gasolineras.dart';
+import '../services/busqueda.dart';
 import '../widgets/volcan_info.dart';
 import '../widgets/lugar_info.dart';
 
@@ -195,12 +196,11 @@ class _MapaScreenState extends State<MapaScreen> {
     }
   }
 
-  // Abre una lista de los volcanes ordenados del más alto al más bajo,
-  // con un buscador que filtra mientras escribes. Al tocar uno, cierra la
-  // lista y vuela hacia ese volcán en el mapa.
+  // Abre una lista con TODO: los volcanes (ordenados del más alto al más bajo)
+  // y los lugares turísticos (ciudades, lagos, playas, montañas). Tiene un
+  // buscador que filtra mientras escribes. Al tocar uno, cierra la lista y abre
+  // su ficha (desde donde se puede navegar con voz).
   void _mostrarLista() {
-    final ordenados = [...volcanes]
-      ..sort((a, b) => b.alturaM.compareTo(a.alturaM));
     String busqueda = ''; // lo que el usuario escribe en el buscador
 
     showModalBottomSheet(
@@ -211,13 +211,8 @@ class _MapaScreenState extends State<MapaScreen> {
         // StatefulBuilder permite que la hoja se redibuje al escribir.
         return StatefulBuilder(
           builder: (context, setSheetState) {
-            // Filtra por nombre o departamento (sin importar mayúsculas).
-            final q = busqueda.toLowerCase();
-            final filtrados = ordenados
-                .where((v) =>
-                    v.nombre.toLowerCase().contains(q) ||
-                    v.departamento.toLowerCase().contains(q))
-                .toList();
+            // Busca en volcanes Y lugares (por nombre o departamento).
+            final resultados = buscarTodo(busqueda);
 
             return Padding(
               // Deja espacio cuando aparece el teclado.
@@ -231,7 +226,7 @@ class _MapaScreenState extends State<MapaScreen> {
                     child: TextField(
                       autofocus: false,
                       decoration: const InputDecoration(
-                        labelText: 'Buscar volcán o departamento',
+                        labelText: 'Buscar volcán, ciudad, lago o playa',
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(),
                       ),
@@ -240,57 +235,16 @@ class _MapaScreenState extends State<MapaScreen> {
                     ),
                   ),
                   Flexible(
-                    child: filtrados.isEmpty
+                    child: resultados.isEmpty
                         ? const Padding(
                             padding: EdgeInsets.all(24),
-                            child: Text('No se encontró ningún volcán.'),
+                            child: Text('No se encontró nada con ese nombre.'),
                           )
                         : ListView(
                             shrinkWrap: true,
                             children: [
-                              for (final v in filtrados)
-                                ListTile(
-                                  // Foto pequeña del volcán (o ícono si no hay).
-                                  leading: v.foto != null
-                                      ? ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                          child: Image.network(
-                                            v.foto!,
-                                            width: 54,
-                                            height: 54,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (c, e, s) => Icon(
-                                              v.activo
-                                                  ? Icons.local_fire_department
-                                                  : Icons.terrain,
-                                              color: v.activo
-                                                  ? Colors.red
-                                                  : Colors.deepOrange,
-                                            ),
-                                          ),
-                                        )
-                                      : Icon(
-                                          v.activo
-                                              ? Icons.local_fire_department
-                                              : Icons.terrain,
-                                          color: v.activo
-                                              ? Colors.red
-                                              : Colors.deepOrange,
-                                        ),
-                                  title: Text(v.nombre),
-                                  subtitle: Text(
-                                      '${v.alturaM} m  ·  ${v.departamento}'),
-                                  trailing: v == _masAlto
-                                      ? const Icon(Icons.star,
-                                          color: Colors.amber)
-                                      : null,
-                                  onTap: () {
-                                    Navigator.pop(context); // cierra la lista
-                                    mostrarVolcanInfo(context, v,
-                                        desde: _yo); // abre la ficha con foto
-                                  },
-                                ),
+                              for (final r in resultados)
+                                _filaLista(context, r),
                             ],
                           ),
                   ),
@@ -301,6 +255,81 @@ class _MapaScreenState extends State<MapaScreen> {
         );
       },
     );
+  }
+
+  // Una fila de la lista: un volcán (con foto y altura) o un lugar turístico
+  // (con su ícono de color). Al tocarla cierra la lista y abre la ficha.
+  Widget _filaLista(BuildContext context, ResultadoBusqueda r) {
+    if (r.esVolcan) {
+      final v = r.volcan!;
+      return ListTile(
+        // Foto pequeña del volcán (o ícono si no hay).
+        leading: v.foto != null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image.network(
+                  v.foto!,
+                  width: 54,
+                  height: 54,
+                  fit: BoxFit.cover,
+                  errorBuilder: (c, e, s) => Icon(
+                    v.activo ? Icons.local_fire_department : Icons.terrain,
+                    color: v.activo ? Colors.red : Colors.deepOrange,
+                  ),
+                ),
+              )
+            : Icon(
+                v.activo ? Icons.local_fire_department : Icons.terrain,
+                color: v.activo ? Colors.red : Colors.deepOrange,
+              ),
+        title: Text(v.nombre),
+        subtitle: Text('${v.alturaM} m  ·  ${v.departamento}'),
+        trailing:
+            v == _masAlto ? const Icon(Icons.star, color: Colors.amber) : null,
+        onTap: () {
+          Navigator.pop(context); // cierra la lista
+          mostrarVolcanInfo(context, v, desde: _yo); // abre la ficha con foto
+        },
+      );
+    }
+
+    // Es un lugar turístico (ciudad, lago, playa o montaña).
+    final l = r.lugar!;
+    return ListTile(
+      leading: l.foto != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.network(
+                l.foto!,
+                width: 54,
+                height: 54,
+                fit: BoxFit.cover,
+                errorBuilder: (c, e, s) =>
+                    Icon(iconoDe(l.tipo), color: colorDe(l.tipo)),
+              ),
+            )
+          : Icon(iconoDe(l.tipo), color: colorDe(l.tipo)),
+      title: Text(l.nombre),
+      subtitle: Text('${_tipoSingular(l.tipo)}  ·  ${l.departamento}'),
+      onTap: () {
+        Navigator.pop(context); // cierra la lista
+        mostrarLugarInfo(context, l); // abre la ficha (con "Navegar con voz")
+      },
+    );
+  }
+
+  // Nombre en singular del tipo de lugar (para el subtítulo de la lista).
+  String _tipoSingular(TipoLugar tipo) {
+    switch (tipo) {
+      case TipoLugar.lago:
+        return 'Lago';
+      case TipoLugar.playa:
+        return 'Playa';
+      case TipoLugar.montana:
+        return 'Montaña';
+      case TipoLugar.ciudad:
+        return 'Ciudad';
+    }
   }
 
   @override
