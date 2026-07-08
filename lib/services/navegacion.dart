@@ -40,7 +40,7 @@ Future<Ruta?> obtenerRuta(LatLng origen, LatLng destino) async {
       '${destino.longitude},${destino.latitude}'
       '?overview=full&geometries=geojson&steps=true');
   try {
-    final resp = await http.get(url);
+    final resp = await http.get(url).timeout(const Duration(seconds: 15));
     if (resp.statusCode != 200) return null;
     final data = jsonDecode(resp.body);
     if (data['code'] != 'Ok') return null;

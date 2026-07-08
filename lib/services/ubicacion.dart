@@ -16,7 +16,9 @@ Future<LatLng?> obtenerUbicacion() async {
         permiso == LocationPermission.deniedForever) {
       return null;
     }
-    final pos = await Geolocator.getCurrentPosition();
+    final pos = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(timeLimit: Duration(seconds: 12)),
+    );
     return LatLng(pos.latitude, pos.longitude);
   } catch (_) {
     return null;
